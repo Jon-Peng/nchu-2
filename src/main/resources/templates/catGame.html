@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" >
+    <link rel="import" th:href="@{/index}" id="page1"/>
+    //导航栏样式
+    <link rel="icon" href="/images/paperPlane32.gif">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+
+    <title>🐱🐱捉小喵🐱🐱</title>
+</head>
+<body>
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
+</nav>
+<!--小猫-->
+<script src="https://down.52pojie.cn/.fancyindex/js/phaser.min.js"></script>
+<script src="https://down.52pojie.cn/.fancyindex/js/catch-the-cat.js"></script>
+<div id="catch-the-cat" style="text-align: center"></div>
+<script>
+    window.game = new CatchTheCatGame({
+        w: 11,
+        h: 11,
+        r: 20,
+        backgroundColor: 16777215,
+        parent: "catch-the-cat",
+        statusBarAlign: "center",
+        credit: "PJY"
+    })
+</script>
+
+<!--    <DIV class="style6" align="center"><P class="style7"></P></DIV>-->
+</body>
+</html>

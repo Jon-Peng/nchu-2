@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="/images/paperPlane.gif">
+    <title>NCHU</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+
+
+<body class="body">
+<!--导航栏-->
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
+</nav>
+<!--content-->
+<!--音乐-->
+<div id="changeMusic0">
+    <audio style="width:180px;height:42px;outline: none;" id="changeMusic"
+           src="https://api.uomg.com/api/rand.music"
+           controls>
+    </audio>
+</div>
+<button id="musicButton" onclick="changeMusic()">
+    <img src="/images/cloudMusic.gif">
+</button>
+<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        <div class="jumbotron">
+            <h1>Hello, world!</h1>
+            <p><img src="https://v1.jinrishici.com/all.svg"></p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+</div>
+
+
+
+<script type="application/javascript">
+    function changeMusic() {
+        var a = document.getElementById('changeMusic');
+        a.src = 'https://api.uomg.com/api/rand.music';
+    }
+</script>
+</body>
+</html>

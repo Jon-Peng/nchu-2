@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="/images/paperPlane.gif">
+    <title>NCHU</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/publish.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+
+
+<body class="body">
+<!--导航栏-->
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
+</nav>
+
+
+<!--content-->
+<div class="container-fluid publish">
+    <div class="row">
+        <div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" >
+                    <a th:href="@{/}">
+                        Home
+                    </a>
+                </li>
+                <li role="presentation"class="active">
+                    <a th:href="@{/post/toPublish}">
+                        发帖
+                    </a>
+                </li>
+                <li role="presentation"><a href="#">Messages</a></li>
+            </ul>
+        </div>
+        <div class=" col-md-9">
+            <!--/*@thymesVar id="textPostModel" type=""*/-->
+            <form th:action="@{/post/publish}" method="post" th:object="${textPostModel}">
+                <br><br>
+                <br><br>
+                <!--/*@thymesVar id="error" type=""*/-->
+                <span style="color:red;font-family: 行楷" th:text="${error}"></span>
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon1">标题</span>
+                    <input id="title" name="title" type="text" class="form-control" placeholder=" 标题 ヾ(•ω•`)o" aria-describedby="sizing-addon2">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon2">内容</span>
+                    <textarea id="content" name="content" class="form-control" placeholder=" 内容 ヾ(•ω•`)o" rows="7" aria-describedby="sizing-addon2"></textarea>
+                </div>
+                <div class="input-group" style="width: 82px">
+                <button type="submit" class="btn btn-info" >呈上宝帖</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <br><br><br><br>
+            <ul>
+
+
+            </ul>
+            <dl>
+                <dt><h3>Read Me <small> 看看我吧 (✿◕‿◕✿)</small></h3></dt>
+                <dd>
+                    <li><img src="https://v1.jinrishici.com/all.svg"></li>
+                    <li><img src="https://v1.jinrishici.com/all.svg"></li>
+                    <li><img src="https://v1.jinrishici.com/all.svg"></li>
+                    <li><img src="https://v1.jinrishici.com/all.svg"></li>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function changeMusic() {
+        var a = document.getElementById('changeMusic');
+        a.src='https://api.uomg.com/api/rand.music';
+    }
+</script>
+</body>
+</html>

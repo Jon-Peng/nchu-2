@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="/images/paperPlane.gif">
+    <title>NCHU</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <style>
+        #bg-over {
+            background-size: 1500px auto;
+            width: 4500px;
+            transform: translate3d(0, 0, 0);
+            background: #348cb2 url(https://blog.52itstyle.com/bg.jpg) bottom left;
+            background-repeat: repeat-x;
+            height: 100%;
+            left: 0;
+            opacity: 1;
+            position: fixed;
+            top: 0;
+        }
+    </style>
+</head>
+
+
+<body class="body" style="background: whitesmoke;">
+<!--导航栏-->
+<!--导航栏-->
+<nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
+</nav>
+<!--<div id="bg-over">
+</div>-->
+<!--content-->
+<div class="container-fluid content">
+    <div class="row" style="background:rgb(250 255 250); box-shadow: 0px 5px 15px grey;border-radius: 18px;">
+        <div class="col-xs-12 col-md-9">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a th:href="@{/}">
+                        Home
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a th:href="@{/post/toPublish}">
+                        发帖
+                    </a>
+                </li>
+                <li role="presentation"><a href="#">Messages</a></li>
+            </ul>
+            <!--帖子展示-->
+
+            <div class="media" th:each="postUserEntry : ${session.postDetailMap}">
+                <div class="media-left">
+                    <a href="#">
+                        <img style="width: 40px; box-shadow: 1px 1px 2px midnightblue; " class="media-object img-circle"
+                             th:src="${postUserEntry.value.avatar}"
+                             th:alt="${postUserEntry.value.name}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading text-primary" style="font-family:'仿宋';line-height: 40px"
+                        th:text="${postUserEntry.value.nickName}"></h4>
+                    <br>
+                    <h3 class="media-heading text-primary" style="font-family:'楷体'"
+                        th:text="${postUserEntry.key.title}"></h3>
+                    <br>
+                    <span class="text-muted">
+                            <span th:text="${postUserEntry.key.readCount}"></span> 阅读 ·
+                            <span th:text="${postUserEntry.key.commentCount}"></span> 评论 ·
+                            <span th:text="${#dates.format(postUserEntry.key.createTime,'MM-dd HH:mm')}"></span>
+                    </span>
+                    <hr>
+                    <br>
+                    <h4><span class="text-justify" th:text="${postUserEntry.key.content}"></span><br></h4>
+                </div>
+                <hr style="width: 710px">
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <h2>( ⓛ ω ⓛ *)</h2>
+            <!--搜索框-->
+            
+            <div class="btn-group-vertical" role="group" aria-label="...">
+                <button class="btn btn-primary" type="button">
+                    Messages <span class="badge">1</span>
+                </button>
+                <button class="btn btn-success" type="button">
+                    Messages <span class="badge">2</span>
+                </button>
+                <button class="btn btn-info" type="button">
+                    Messages <span class="badge">4</span>
+                </button>
+
+                <button type="button" class="btn btn-default">1</button>
+                <button type="button" class="btn btn-warning">
+                    <a href="#">Inbox <span class="badge">42</span></a>
+                </button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Dropdown link</a></li>
+                        <li><a href="#">Dropdown link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<each>
+
+</each>
+
+
+<script th:inline="javascript">
+    function changeMusic() {
+        var a = document.getElementById('changeMusic');
+        a.src = 'https://api.uomg.com/api/rand.music';
+    }
+
+    // window.onload=function () {
+    //     countLiveDays();
+    //     document.getElementById("liveDays").innerHTML=countLiveDays();
+    // }
+    // function countLiveDays() {
+    //     // var idNum = (String)[[${session.userEntity.idNum}]];
+    //     var idNum = sessionStorage.getItem("userEntity").idNum;
+    //     var year = idNum.substring(6,10);
+    //     var month = idNum.substring(10,12);
+    //     var day = idNum.substring(12,14);
+    //     console.log('生日=='+year+month+day);
+    //     // var birthday = year+'-'+month+'-'+day;
+    //     var birthday = new Date(year,month,day);
+    //     // var s = new SimpleDateFormat("yyyy-MM-dd");
+    //     // var old = s.parse(birthday).getTime();
+    //     var old = birthday.getTime();
+    //     var now = new Date().getTime();
+    //     console.log('出生'+old+'现在'+now);
+    //     var days = (now-old)/(24*60*60*1000);
+    //     console.log('天数'+days);
+    //     document.getElementById("liveDays").innerHTML=parseInt(days);
+    // }
+</script>
+</body>
+</html>
