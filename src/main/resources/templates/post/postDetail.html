@@ -63,12 +63,21 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading text-primary" style="font-family:'仿宋';line-height: 40px"
+                    <h4 class="media-heading text-primary" style="font-family:'宋体';line-height: 40px"
                         th:text="${postUserEntry.value.nickName}"></h4>
                     <br>
                     <h3 class="media-heading text-primary" style="font-family:'楷体'"
                         th:text="${postUserEntry.key.title}"></h3>
-                    <br>
+                    <!--操作图标-->
+                    <div style="margin: 8px;">
+                        <a th:href="@{/post/editPost}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        </a>
+                        <a th:href="@{/post/deletePost}">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </a>
+                    </div>
+
                     <span class="text-muted">
                             <span th:text="${postUserEntry.key.readCount}"></span> 阅读 ·
                             <span th:text="${postUserEntry.key.commentCount}"></span> 评论 ·
@@ -78,14 +87,36 @@
                     <br>
                     <h4><span class="text-justify" th:text="${postUserEntry.key.content}"></span><br></h4>
                 </div>
-                <hr style="width: 710px">
+                <hr style="width: 432px;display: inline-block;">
+                <span style="text-align: center;line-height: 40px" class="text-muted">end</span>
+                <hr style="width: 435px;display: inline-block;">
             </div>
 
         </div>
         <div class="col-md-3">
             <h2>( ⓛ ω ⓛ *)</h2>
-            <!--搜索框-->
-            
+            <!--相关人员-->
+            <div class="media" th:each="postUserEntry : ${session.postDetailMap}">
+                <h2>
+                    发布人
+                </h2>
+                <hr>
+                <div class="media-left">
+                    <a href="#">
+                        <img style="width: 40px; box-shadow: 1px 1px 2px midnightblue; " class="media-object img-circle"
+                             th:src="${postUserEntry.value.avatar}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading text-primary" style="font-family:'宋体';line-height: 40px"
+                        th:text="${postUserEntry.value.nickName}"></h5>
+                </div>
+            </div>
+            <h2>
+                相关
+            </h2>
+            <hr>
+            <!--按钮-->
             <div class="btn-group-vertical" role="group" aria-label="...">
                 <button class="btn btn-primary" type="button">
                     Messages <span class="badge">1</span>
@@ -128,28 +159,6 @@
         a.src = 'https://api.uomg.com/api/rand.music';
     }
 
-    // window.onload=function () {
-    //     countLiveDays();
-    //     document.getElementById("liveDays").innerHTML=countLiveDays();
-    // }
-    // function countLiveDays() {
-    //     // var idNum = (String)[[${session.userEntity.idNum}]];
-    //     var idNum = sessionStorage.getItem("userEntity").idNum;
-    //     var year = idNum.substring(6,10);
-    //     var month = idNum.substring(10,12);
-    //     var day = idNum.substring(12,14);
-    //     console.log('生日=='+year+month+day);
-    //     // var birthday = year+'-'+month+'-'+day;
-    //     var birthday = new Date(year,month,day);
-    //     // var s = new SimpleDateFormat("yyyy-MM-dd");
-    //     // var old = s.parse(birthday).getTime();
-    //     var old = birthday.getTime();
-    //     var now = new Date().getTime();
-    //     console.log('出生'+old+'现在'+now);
-    //     var days = (now-old)/(24*60*60*1000);
-    //     console.log('天数'+days);
-    //     document.getElementById("liveDays").innerHTML=parseInt(days);
-    // }
 </script>
 </body>
 </html>

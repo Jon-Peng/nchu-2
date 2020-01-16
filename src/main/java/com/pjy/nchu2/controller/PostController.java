@@ -8,6 +8,7 @@ import com.pjy.nchu2.model.AddTextPostModel;
 import com.pjy.nchu2.service.PostService;
 import com.pjy.nchu2.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,7 +34,9 @@ public class PostController {
     //添加文本帖子
     @PostMapping("/post/publish")
     public String addTextPost(@ModelAttribute AddTextPostModel textPostModel,
-                              HttpServletRequest request) {
+                              HttpServletRequest request,
+//                              @RequestParam(value = "postId", required = false) int postId,
+                              Model model) {
 
 //        postService.addTextPost(textPostModel);
         UserEntity userEntity = (UserEntity) request.getSession().getAttribute("userEntity");
@@ -42,16 +45,19 @@ public class PostController {
             return "post/publish";
         }
         int stuId = userEntity.getStuId();
+        int postId = 0;
+             postId =  textPostModel.getPostId();
+        System.out.println(postId);
         String title = textPostModel.getTitle();
         String content = textPostModel.getContent();
         String tag = textPostModel.getTag();
-//        userService.getUser();
-        PostEntity postEntity = postService.addTextPost(stuId, title, tag, content);//返回post
+
+        PostEntity postEntity = postService.addTextPost(postId,stuId, title, tag, content);//写入帖子，返回post
         List imageList = textPostModel.getImageList();
         int orderIndex = 0;
         if (imageList != null && imageList.size() != 0) {
-            for (Object iamge : imageList) {
-                postService.addPostImage(postEntity.getPostId(), iamge.toString(), orderIndex++);
+            for (Object image : imageList) {
+                postService.addPostImage(postEntity.getPostId(), image.toString(), orderIndex++);
             }
         }
         return "redirect:/";
@@ -103,7 +109,7 @@ public class PostController {
             PageInfo<PostEntity> pageInfo = new PageInfo<>(postList);//使用pageInfo进行包装
             request.getSession().setAttribute("pageInfo", pageInfo);//存入session
             System.out.println("--搜索PAGE--" + pageInfo);
-//        List postList = postService.pagePostList(page,size);//获取分页帖子列表
+
             postList = pageInfo.getList();
             Map<PostEntity, UserEntity> map = new HashMap<>();//创建帖子:用户 map对想
             for (int i = 0; i < postList.size(); i++) {
@@ -111,13 +117,24 @@ public class PostController {
                 UserEntity user = userService.getUser(post.getStuId());
                 map.put(post, user);
             }
-            System.out.println(map);
+
 
             request.getSession().setAttribute("postPersonMap", map);//改为postPersonMap
             return "user/profile";
         }
-//        List postList = postService.allPostList();//获取所有帖子列表
 
+    }
+    @GetMapping("/post/editPost")
+    public String editPost(HttpServletRequest request,
+            Model model){
+        Map map = (Map) request.getSession().getAttribute("postDetailMap");
+        Map.Entry entry = null;
+        for(Object mapEntry : map.entrySet()){
+             entry =(Map.Entry)mapEntry;
+        }
+        PostEntity postDetail = (PostEntity) entry.getKey();
+        model.addAttribute("postDetail",postDetail);
+        return "post/publish";
     }
 
 }

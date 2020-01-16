@@ -12,18 +12,6 @@
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <style>
-        #bg-over {
-            background-size: 1500px auto;
-            width: 4500px;
-            transform: translate3d(0, 0, 0);
-            background: #348cb2 url(https://blog.52itstyle.com/bg.jpg) bottom left;
-            background-repeat: repeat-x;
-            height: 100%;
-            left: 0;
-            opacity: 1;
-            position: fixed;
-            top: 0;
-        }
     </style>
 </head>
 
@@ -39,10 +27,11 @@
 <div class="container-fluid content">
     <div class="row" style="background:rgb(250 255 250); box-shadow: 0px 5px 15px grey;border-radius: 18px;">
         <div class="col-xs-12 col-md-9">
+            <br>
             <ul class="nav nav-tabs">
                 <li role="presentation" class="active">
                     <a th:href="@{/}">
-                        Home
+                        我的帖子
                     </a>
                 </li>
                 <li role="presentation">
@@ -63,8 +52,10 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading text-primary" style="font-family:'楷体'" th:text="${postUserEntry.key.title}"></h4>
-                    <span class="text-justify" th:text="${postUserEntry.key.content}"></span><br>
+                    <h4 class="media-heading text-primary" style="font-family:'楷体'" th:text="${postUserEntry.value.nickName}"></h4>
+                    <span class="text-justify" th:text="${postUserEntry.key.title}"></span> <!--标题-->
+                    <a th:href="@{'/post/'+${postUserEntry.key.postId}}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a><!--图标-->
+                    <br>
                     <span class="text-muted">
                             <span th:text="${postUserEntry.key.readCount}"></span> 阅读 ·
                             <span th:text="${postUserEntry.key.commentCount}"></span> 评论 ·

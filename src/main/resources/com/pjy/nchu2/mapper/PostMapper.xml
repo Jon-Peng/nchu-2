@@ -38,15 +38,30 @@
         or content
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
     </select>
+
     <!--插入帖子-->
     <insert id="insert">
-        insert into
-        post (title, comment_count, read_count, like_count, update_time, is_release, keep_count,
+        insert into post
+        (title, comment_count, read_count, like_count, update_time, is_release, keep_count,
         stu_id, type,  release_time, content, tag, is_public, link_url, link_name, list_photo)
         values
         (#{title}, #{commentCount}, #{readCount}, #{likeCount}, current_timestamp, #{isRelease}, #{keepCount}, #{stuId},
         #{type},  current_timestamp, #{content},  #{tag}, #{isPublic}, #{linkUrl}, #{linkName}, #{listPhoto})
 
     </insert>
+
+    <!--update-->
+    <update id="update" >
+        update post
+        set
+            title=#{title},
+            content=#{content},
+            tag = #{tag},
+            is_release = #{isRelease},
+            is_public = #{isPublic},
+           <!--update_time = #{updateTime}-->
+            update_time = current_timestamp
+        where post_id = #{postId}
+    </update>
 
 </mapper>

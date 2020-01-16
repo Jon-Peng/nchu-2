@@ -47,13 +47,30 @@
                 <!--/*@thymesVar id="error" type=""*/-->
                 <span style="color:red;font-family: 行楷" th:text="${error}"></span>
                 <div class="input-group">
-                    <span class="input-group-addon" id="sizing-addon1">标题</span>
-                    <input id="title" name="title" type="text" class="form-control" placeholder=" 标题 ヾ(•ω•`)o" aria-describedby="sizing-addon2">
+                    <input type="hidden" name="postId" th:if="${postDetail}!=null" th:value="${postDetail.postId}">
+                    <span class="input-group-addon" id="sizing-addon1" >标题</span>
+                    <span th:if="${postDetail}!=null">
+                    <input id="title" name="title" type="text" class="form-control" th:value="${postDetail.title}" placeholder=" 标题 ヾ(•ω•`)o" aria-describedby="sizing-addon2">
+                    </span>
+                    <span th:if="${postDetail}==null">
+                    <input  name="title" type="text" class="form-control"  placeholder=" 标题 ヾ(•ω•`)o" aria-describedby="sizing-addon2">
+                    </span>
                 </div>
                 <div class="input-group">
+
                     <span class="input-group-addon" id="sizing-addon2">内容</span>
-                    <textarea id="content" name="content" class="form-control" placeholder=" 内容 ヾ(•ω•`)o" rows="7" aria-describedby="sizing-addon2"></textarea>
+                    <textarea th:if="${postDetail}==null"  name="content" class="form-control"  placeholder=" 内容 ヾ(•ω•`)o" rows="7" aria-describedby="sizing-addon2">
+                    </textarea>
+                    <textarea th:if="${postDetail}!=null" id="content" name="content" class="form-control"  placeholder=" 内容 ヾ(•ω•`)o" rows="7" aria-describedby="sizing-addon2">
+                        <h th:text="${postDetail.content}"/>
+                    </textarea>
                 </div>
+                <script th:if="${postDetail}!=null" th:inline="javascript">
+                    /*js给textarea赋值*/
+                    var a = [[${postDetail.content}]];
+                    document.getElementById("content").innerHTML= a
+                </script>
+
                 <div class="input-group" style="width: 82px">
                 <button type="submit" class="btn btn-info" >呈上宝帖</button>
                 </div>

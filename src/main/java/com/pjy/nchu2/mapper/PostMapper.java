@@ -12,6 +12,8 @@ public interface PostMapper {
     void insert(PostEntity post);
     void delete(PostEntity post);
     void update(PostEntity post);
+//    void update(int postId, String title, String tag, String content);
+
 
     //查询帖子
     List<PostEntity> selectById(int id);
@@ -24,4 +26,5 @@ public interface PostMapper {
     List<PostEntity> searchPost(String keyword);
 
     List<PostEntity> searchPostById(String keyword, int stuId);
+
 }

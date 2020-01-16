@@ -15,9 +15,8 @@
 
 <body class="body">
 <!--导航栏-->
-<nav class="navbar navbar-default navbar-fixed-top" th:fragment="navPart">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
+<nav class="navbar navbar-default navbar-fixed-top" th:fragment="navPart" >
+    <div class="container-fluid" style="box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -32,7 +31,7 @@
             <form class="navbar-form navbar-left" th:action="@{/post/search}">
                 <div class="form-group">
                     <input type="text" name="keyword" class="form-control" placeholder="Search">
-<!--                    <input type="hidden" name="stuId" th:value="${session.userEntity.stuId}">-->
+                    <!--<input type="hidden" name="stuId" th:value="${session.userEntity.stuId}">-->
                 </div>
                 <button type="submit" class="btn btn-default">搜索</button>
                 <a th:href="@{/user/catGame}" style="margin: 0 15px 0 15px">🐱</a>
@@ -48,7 +47,8 @@
                 <li class="dropdown" th:if="${session.userEntity}!=null">
 
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><span th:text="${session.userEntity.nickName}"></span><span class="caret" ></span></a>
+                       aria-expanded="false"><span th:text="${session.userEntity.nickName}"></span><span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a th:href="@{/user/profile}">个人中心</a></li>
                         <li><a th:href="@{/user/info}">个人资料</a></li>
@@ -59,7 +59,7 @@
                     </ul>
 
                 </li>
-<!--                <span style="line-height: 50px">▼</span>-->
+                <!--                <span style="line-height: 50px">▼</span>-->
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class AddTextPostModel {
 
+    private int postId;
 //    @ApiModelProperty("标题")
     private String title;
 //    @ApiModelProperty("内容")

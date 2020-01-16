@@ -21,55 +21,82 @@ public class PostService {
     private PostImageMapper postImageMapper;
 
     //添加贴子文本信息
-    public PostEntity addTextPost(int stuId, String title, String tag,String content) {
+    public PostEntity addTextPost(int postId, int stuId, String title, String tag, String content) {
         PostEntity postEntity = new PostEntity();
-        postEntity.setStuId(stuId);
-        postEntity.setTitle(title);
-        postEntity.setTag(tag);
-        postEntity.setContent(content);
-        
-        postEntity.setCommentCount(0);
-        postEntity.setReadCount(0);
-        postEntity.setLikeCount(0);
-        postEntity.setRelease(true);
-        postEntity.setKeepCount(0);
-//        postEntity.setStuId(stuId);
-        postEntity.setType(1);
-        postEntity.setTag(tag);
+        if (postId != 0) {
+            System.out.println("@@@@@ postId 不为空 @@@@@");
+            //update
+            postEntity.setPostId(postId);
+            postEntity.setStuId(stuId);
+            postEntity.setTitle(title);
+            postEntity.setTag(tag);
+            postEntity.setContent(content);
+            postEntity.setRelease(true);
 //        post.setGameId(-1);
 //        post.setHtmlContent("");
-        postEntity.setPublic(true);
-        postEntity.setReleaseTime(new Timestamp(System.currentTimeMillis()));
-        
-        postMapper.insert(postEntity);
-        
-        return postEntity;
+            postEntity.setPublic(true);
+            postEntity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+            postMapper.update(postEntity);
+            System.out.println("@@@@@postEntity@@@@@@@"+postEntity);
+            return postEntity;
+        } else {
+
+            postEntity.setStuId(stuId);
+            postEntity.setTitle(title);
+            postEntity.setTag(tag);
+            postEntity.setContent(content);
+
+            postEntity.setCommentCount(0);
+            postEntity.setReadCount(0);
+            postEntity.setLikeCount(0);
+            postEntity.setRelease(true);
+            postEntity.setKeepCount(0);
+//        postEntity.setStuId(stuId);
+            postEntity.setType(1);
+            postEntity.setTag(tag);
+//        post.setGameId(-1);
+//        post.setHtmlContent("");
+            postEntity.setPublic(true);
+            postEntity.setReleaseTime(new Timestamp(System.currentTimeMillis()));
+
+            postMapper.insert(postEntity);
+
+            return postEntity;
+        }
+
     }
+
     //
-    public List<PostEntity> postList(int id){
+    public List<PostEntity> postList(int id) {
 
         return postMapper.selectById(id);
     }
+
     //查询所有帖子
-    public List<PostEntity> allPostList(){
+    public List<PostEntity> allPostList() {
+
         return postMapper.selectAllPost();
     }
+
     //搜索查询
     public List<PostEntity> allPostList(String keyword) {
         return postMapper.searchPost(keyword);
     }
+
     public List<PostEntity> allPostList(String keyword, int stuId) {
         return postMapper.searchPostById(
-                keyword,stuId);
+                keyword, stuId);
     }
+
     //分页查询帖子
     public List<PostEntity> pagePostList(Integer page, Integer size) {
-        Integer start = size*(page-1);
-        return postMapper.selectPagePost(start,size);
+        Integer start = size * (page - 1);
+        return postMapper.selectPagePost(start, size);
     }
 
     /**
      * 添加图片到帖子
+     *
      * @param postId     帖子id
      * @param imageUrl   图片地址
      * @param orderIndex 顺序

@@ -123,7 +123,46 @@
         <div class="col-md-3">
             <h2>( ⓛ ω ⓛ *)</h2>
             <h3>这位同学你已存活<span id="liveDays" th:text="${session.liveDays}"></span>天</h3>
+            <!--古诗-->
+            <hr>
+            <div>
+                <h4 id="gushiContent">1</h4>
+                ---《<span id="gushiName"></span>》
+                <span id="gushiAuthor">2</span>
+                <script>
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('get', 'https://v1.jinrishici.com/all.json');
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            var data = JSON.parse(xhr.responseText);
+                            var gushici = document.getElementById('gushiContent');
+                            gushici.innerHTML = data.content;
+                            var gushiAuthor = document.getElementById('gushiAuthor');
+                            gushiAuthor.innerHTML = data.author;
+                            var gushiAuthor = document.getElementById('gushiName');
+                            gushiAuthor.innerHTML = data.origin;
+                        }
+                    };
+                    xhr.send()
+                </script>
+            </div>
+            <div>
+                <script>
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('get', 'http://www.jiahengfei.cn:33550/port/history?dispose=easy&key=jiahengfei&month=4&day=1');
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            var data = JSON.parse(xhr.responseText);
+                            var gushici = document.getElementById('gushiContent');
+                            gushici.innerHTML = data.content;
+                        }
+                    };
+                    xhr.send()
+                </script>
+            </div>
+
         </div>
+
     </div>
 </div>
 
@@ -137,28 +176,6 @@
         var a = document.getElementById('changeMusic');
         a.src = 'https://api.uomg.com/api/rand.music';
     }
-    // window.onload=function () {
-    //     countLiveDays();
-    //     document.getElementById("liveDays").innerHTML=countLiveDays();
-    // }
-    // function countLiveDays() {
-    //     // var idNum = (String)[[${session.userEntity.idNum}]];
-    //     var idNum = sessionStorage.getItem("userEntity").idNum;
-    //     var year = idNum.substring(6,10);
-    //     var month = idNum.substring(10,12);
-    //     var day = idNum.substring(12,14);
-    //     console.log('生日=='+year+month+day);
-    //     // var birthday = year+'-'+month+'-'+day;
-    //     var birthday = new Date(year,month,day);
-    //     // var s = new SimpleDateFormat("yyyy-MM-dd");
-    //     // var old = s.parse(birthday).getTime();
-    //     var old = birthday.getTime();
-    //     var now = new Date().getTime();
-    //     console.log('出生'+old+'现在'+now);
-    //     var days = (now-old)/(24*60*60*1000);
-    //     console.log('天数'+days);
-    //     document.getElementById("liveDays").innerHTML=parseInt(days);
-    // }
 </script>
 </body>
 </html>
