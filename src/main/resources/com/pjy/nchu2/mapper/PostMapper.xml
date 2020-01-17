@@ -6,25 +6,22 @@
     <!--查询帖子-->
     <!--查询所有-->
     <select id="selectAllPost" resultType="com.pjy.nchu2.entity.PostEntity">
-        select * from post
+        select * from post where status != -1
     </select>
     <!--查询指定帖子-ID-->
     <select id="selectOnePostById" resultType="com.pjy.nchu2.entity.PostEntity">
         select * from post
         where post_id = #{postId}
     </select>
-    <!--手动分页查询-->
-    <select id="selectPagePost" resultType="com.pjy.nchu2.entity.PostEntity">
-        select * from post limit #{start},#{size}
-    </select>
     <!--查询个人帖子-->
     <select id="selectPersonPost" resultType="com.pjy.nchu2.entity.PostEntity">
-        select * from post where stu_id = #{stuId}
+        select * from post where stu_id = #{stuId} and status != -1
     </select>
     <!--搜索查询-->
     <select id="searchPost" resultType="com.pjy.nchu2.entity.PostEntity">
         select * from post
-        where title
+        where status !=-1
+        and title
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
         or content
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
@@ -33,6 +30,7 @@
     <select id="searchPostById" resultType="com.pjy.nchu2.entity.PostEntity">
         select * from post
         where stu_id = #{stuId}
+        and status !=-1
         and title
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
         or content
@@ -51,7 +49,7 @@
     </insert>
 
     <!--update-->
-    <update id="update" >
+    <update id="update">
         update post
         set
             title=#{title},
@@ -59,8 +57,11 @@
             tag = #{tag},
             is_release = #{isRelease},
             is_public = #{isPublic},
-           <!--update_time = #{updateTime}-->
-            update_time = current_timestamp
+            update_time = #{updateTime},
+            read_count = #{readCount},
+            status = #{status}
+
+            /*update_time = current_timestamp*/
         where post_id = #{postId}
     </update>
 

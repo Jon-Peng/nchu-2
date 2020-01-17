@@ -20,61 +20,47 @@ public class PostService {
     @Resource
     private PostImageMapper postImageMapper;
 
+
     //添加贴子文本信息
     public PostEntity addTextPost(int postId, int stuId, String title, String tag, String content) {
+
         PostEntity postEntity = new PostEntity();
+        postEntity.setStuId(stuId);
+        postEntity.setTitle(title);
+        postEntity.setTag(tag);
+        postEntity.setContent(content);
+        postEntity.setRelease(true);
+        postEntity.setPublic(true);
+        postEntity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+
         if (postId != 0) {
-            System.out.println("@@@@@ postId 不为空 @@@@@");
-            //update
+
+            //update postId不为0 时进行修改操作
             postEntity.setPostId(postId);
-            postEntity.setStuId(stuId);
-            postEntity.setTitle(title);
-            postEntity.setTag(tag);
-            postEntity.setContent(content);
-            postEntity.setRelease(true);
-//        post.setGameId(-1);
-//        post.setHtmlContent("");
-            postEntity.setPublic(true);
-            postEntity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
             postMapper.update(postEntity);
             System.out.println("@@@@@postEntity@@@@@@@"+postEntity);
             return postEntity;
         } else {
 
-            postEntity.setStuId(stuId);
-            postEntity.setTitle(title);
-            postEntity.setTag(tag);
-            postEntity.setContent(content);
+            //postId为0进行添加操作
 
             postEntity.setCommentCount(0);
             postEntity.setReadCount(0);
             postEntity.setLikeCount(0);
-            postEntity.setRelease(true);
             postEntity.setKeepCount(0);
-//        postEntity.setStuId(stuId);
             postEntity.setType(1);
-            postEntity.setTag(tag);
-//        post.setGameId(-1);
-//        post.setHtmlContent("");
-            postEntity.setPublic(true);
-            postEntity.setReleaseTime(new Timestamp(System.currentTimeMillis()));
-
             postMapper.insert(postEntity);
 
             return postEntity;
         }
 
     }
-
-    //
-    public List<PostEntity> postList(int id) {
-
-        return postMapper.selectById(id);
+    //修改帖子
+    public void updatePost(PostEntity postEntity){
+        postMapper.update(postEntity);
     }
-
     //查询所有帖子
     public List<PostEntity> allPostList() {
-
         return postMapper.selectAllPost();
     }
 

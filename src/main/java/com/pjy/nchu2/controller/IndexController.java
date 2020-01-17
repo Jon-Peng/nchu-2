@@ -38,8 +38,6 @@ public class IndexController {
         PageInfo<PostEntity> pageInfo = new PageInfo<>(postList);//使用pageInfo进行包装
         request.getSession().setAttribute("pageInfo",pageInfo);//存入session
         System.out.println(pageInfo);
-//        List postList = postService.pagePostList(page,size);//获取分页帖子列表
-
         postList = pageInfo.getList();
         Map<PostEntity, UserEntity> map = new HashMap<>();//创建帖子:用户 map对想
         for(int i=0 ;i<postList.size();i++){

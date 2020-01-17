@@ -11,6 +11,7 @@ import com.pjy.nchu2.model.UserLoginModel;
 import com.pjy.nchu2.service.PostService;
 import com.pjy.nchu2.service.UserService;
 import com.pjy.nchu2.utils.GetApiDataUtil;
+import com.pjy.nchu2.utils.JsonResult;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -120,15 +120,15 @@ public class UserController {
 //        System.out.println("--QQInfoModel--" + qim);
         return null;
     }
+
     //个人信息
     @GetMapping("/user/info")
     public String userInfo(HttpServletRequest request){
 
-//        HttpSession session = request.getSession();
-//        UserEntity userEntity = (UserEntity) session.getAttribute("userEntity");
         return "user/userInfo";
     }
-    //
+
+    //个人中心
     @GetMapping("/user/profile")
     public String profile(HttpServletRequest request,
                           @RequestParam(name="page",defaultValue = "1") int page,
@@ -149,6 +149,14 @@ public class UserController {
         System.out.println(map);
         request.getSession().setAttribute("postPersonMap",map);
         return "user/profile";
+    }
+
+    //api
+    @ResponseBody
+    @GetMapping("/api/user/info")
+    public JsonResult apiUserInfo(@RequestParam(name = "stuId") int stuid){
+        UserEntity userEntity = userService.getUser(stuid);
+        return new JsonResult(userEntity);
     }
     //捉小猫
     @GetMapping("/user/catGame")

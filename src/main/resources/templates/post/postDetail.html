@@ -54,49 +54,61 @@
             </ul>
             <!--帖子展示-->
 
-            <div class="media" th:each="postUserEntry : ${session.postDetailMap}">
+            <div class="media">
                 <div class="media-left">
                     <a href="#">
                         <img style="width: 40px; box-shadow: 1px 1px 2px midnightblue; " class="media-object img-circle"
-                             th:src="${postUserEntry.value.avatar}"
-                             th:alt="${postUserEntry.value.name}">
+                             th:src="${session.postMap.get('postUser').avatar}"
+                             th:alt="${session.postMap.postDetail.title}">
                     </a>
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading text-primary" style="font-family:'宋体';line-height: 40px"
-                        th:text="${postUserEntry.value.nickName}"></h4>
+                        th:text="${session.postMap.get('postUser').nickName}"></h4>
                     <br>
                     <h3 class="media-heading text-primary" style="font-family:'楷体'"
-                        th:text="${postUserEntry.key.title}"></h3>
+                        th:text="${session.postMap.postDetail.title}"></h3>
                     <!--操作图标-->
-                    <div style="margin: 8px;">
-                        <a th:href="@{/post/editPost}">
-                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        </a>
-                        <a th:href="@{/post/deletePost}">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                        </a>
+                    <div style="margin: 8px;" th:if="${session.userEntity}!=null">
+                        <div th:if="${session.postMap.postUser.stuId}==${session.userEntity.stuId}">
+                            <a th:href="@{/post/editPost}">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </a>
+                            <a th:href="@{/post/deletePost}">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                        </div>
+
                     </div>
 
                     <span class="text-muted">
-                            <span th:text="${postUserEntry.key.readCount}"></span> 阅读 ·
-                            <span th:text="${postUserEntry.key.commentCount}"></span> 评论 ·
-                            <span th:text="${#dates.format(postUserEntry.key.createTime,'MM-dd HH:mm')}"></span>
+                            <span th:text="${session.postMap.postDetail.readCount}"></span> 阅读 ·
+                            <span th:text="${session.postMap.postDetail.commentCount}"></span> 评论 ·
+                            <span th:text="${#dates.format(session.postMap.postDetail.createTime,'MM-dd HH:mm')}"></span>
                     </span>
                     <hr>
                     <br>
-                    <h4><span class="text-justify" th:text="${postUserEntry.key.content}"></span><br></h4>
+                    <h4><span class="text-justify" th:text="${session.postMap.postDetail.content}"></span><br></h4>
                 </div>
                 <hr style="width: 432px;display: inline-block;">
                 <span style="text-align: center;line-height: 40px" class="text-muted">end</span>
                 <hr style="width: 435px;display: inline-block;">
+                <!--评论区-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">评论区</h3>
+                    </div>
+                    <div class="panel-body">
+
+                    </div>
+                </div>
             </div>
 
         </div>
         <div class="col-md-3">
             <h2>( ⓛ ω ⓛ *)</h2>
             <!--相关人员-->
-            <div class="media" th:each="postUserEntry : ${session.postDetailMap}">
+            <div class="media">
                 <h2>
                     发布人
                 </h2>
@@ -104,12 +116,12 @@
                 <div class="media-left">
                     <a href="#">
                         <img style="width: 40px; box-shadow: 1px 1px 2px midnightblue; " class="media-object img-circle"
-                             th:src="${postUserEntry.value.avatar}">
+                             th:src="${session.postMap.postUser.avatar}">
                     </a>
                 </div>
                 <div class="media-body">
                     <h5 class="media-heading text-primary" style="font-family:'宋体';line-height: 40px"
-                        th:text="${postUserEntry.value.nickName}"></h5>
+                        th:text="${session.postMap.postUser.nickName}"></h5>
                 </div>
             </div>
             <h2>

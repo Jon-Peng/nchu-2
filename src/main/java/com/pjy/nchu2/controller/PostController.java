@@ -34,11 +34,10 @@ public class PostController {
     //添加文本帖子
     @PostMapping("/post/publish")
     public String addTextPost(@ModelAttribute AddTextPostModel textPostModel,
-                              HttpServletRequest request,
+                              HttpServletRequest request
 //                              @RequestParam(value = "postId", required = false) int postId,
-                              Model model) {
+                             ) {
 
-//        postService.addTextPost(textPostModel);
         UserEntity userEntity = (UserEntity) request.getSession().getAttribute("userEntity");
         if (userEntity == null) {
             request.setAttribute("error", "小伙子，没登录就想发帖嘛！");
@@ -67,10 +66,21 @@ public class PostController {
     public String postDetail(HttpServletRequest request,
                              @PathVariable(name = "postId") int postId){
         PostEntity postDetail = postService.selectOnePost(postId);
+        if (postDetail == null) {
+            return "error";
+        }
         UserEntity userEntity = userService.getUser(postDetail.getStuId());
-        Map<PostEntity,UserEntity> postDetailMap = new HashMap<>();
-        postDetailMap.put(postDetail,userEntity);
-        request.getSession().setAttribute("postDetailMap",postDetailMap);
+        if (userEntity == null) {
+            userEntity.setNickName("该账户已注销");
+        }
+        Map postDetailMap = new HashMap<>();
+        postDetailMap.put("postDetail",postDetail);
+        postDetailMap.put("postUser",userEntity);
+        request.getSession().setAttribute("postMap",postDetailMap);
+
+        postDetail.setReadCount(postDetail.getReadCount()+1);//修改阅读数
+        System.out.println("浏览量"+postDetail.getReadCount()+1);
+        postService.updatePost(postDetail);
         return "post/postDetail";
     }
 
@@ -92,7 +102,6 @@ public class PostController {
             PageInfo<PostEntity> pageInfo = new PageInfo<>(postList);//使用pageInfo进行包装
             request.getSession().setAttribute("pageInfo", pageInfo);//存入session
             System.out.println("--搜索PAGE--" + pageInfo);
-//        List postList = postService.pagePostList(page,size);//获取分页帖子列表
             postList = pageInfo.getList();
             Map<PostEntity, UserEntity> map = new HashMap<>();//创建帖子:用户 map对想
             for (int i = 0; i < postList.size(); i++) {
@@ -118,23 +127,27 @@ public class PostController {
                 map.put(post, user);
             }
 
-
             request.getSession().setAttribute("postPersonMap", map);//改为postPersonMap
             return "user/profile";
         }
 
     }
+    //修改帖子
     @GetMapping("/post/editPost")
     public String editPost(HttpServletRequest request,
             Model model){
-        Map map = (Map) request.getSession().getAttribute("postDetailMap");
-        Map.Entry entry = null;
-        for(Object mapEntry : map.entrySet()){
-             entry =(Map.Entry)mapEntry;
-        }
-        PostEntity postDetail = (PostEntity) entry.getKey();
-        model.addAttribute("postDetail",postDetail);
+        Map map = (Map) request.getSession().getAttribute("postMap");
+        model.addAttribute("postDetail",map.get("postDetail"));
         return "post/publish";
+    }
+    //删除帖子
+    @GetMapping("/post/deletePost")
+    public String deletePost(HttpServletRequest request){
+        Map map = (Map) request.getSession().getAttribute("postMap");
+        PostEntity postEntity = (PostEntity) map.get("postDetail");
+        postEntity.setStatus(-1);
+        postService.updatePost(postEntity);
+        return "redirect:/user/profile";
     }
 
 }

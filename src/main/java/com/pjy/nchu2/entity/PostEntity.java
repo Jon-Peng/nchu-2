@@ -18,13 +18,11 @@ public class PostEntity {
     private int keepCount;
     private int stuId;
     private int type;
-//    private int gameId;
     private Timestamp releaseTime;
     private String content;
 //    private String htmlContent;
     private String tag;
     private boolean isPublic;
-//    private boolean hidePlayerName;
 //    private int status;
 //    private String voice;
     private String linkUrl;
@@ -33,5 +31,6 @@ public class PostEntity {
     private int recommendStatus;
     private Timestamp recommendTime;
     private int isStick;
+    private int status = 0; //帖子状态 0
 
 }
