@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/index.css">
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="js/nchu.js"></script>
 </head>
 
 
@@ -54,7 +55,7 @@
                 </div>
             </div>
             <!--修改-->
-            <div id="changeInfo" class="panel panel-primary" style="margin: 30px auto;visibility: hidden">
+            <div id="changeInfo" class="panel panel-primary" style="margin: 30px auto;display: none">
                 <div class="panel-heading">
                     <h3 class="panel-title">资料修改</h3>
                 </div>
@@ -113,15 +114,6 @@
     function changeMusic() {
         var a = document.getElementById('changeMusic');
         a.src='https://api.uomg.com/api/rand.music';
-    }
-    function changeInfo() {
-        var visibility = document.getElementById('changeInfo');
-        if (visibility.style.visibility=='hidden'){
-            visibility.style.visibility='visible';
-        }else  {
-            visibility.style.visibility='hidden'
-        }
-
     }
 </script>
 </body>

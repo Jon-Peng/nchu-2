@@ -74,12 +74,6 @@ public class PostService {
                 keyword, stuId);
     }
 
-    //分页查询帖子
-    public List<PostEntity> pagePostList(Integer page, Integer size) {
-        Integer start = size * (page - 1);
-        return postMapper.selectPagePost(start, size);
-    }
-
     /**
      * 添加图片到帖子
      *

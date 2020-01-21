@@ -16,7 +16,6 @@ public class UserService {
     //查找账户
     public UserEntity login(UserLoginModel userLoginModel){
 
-        System.out.println("--accountLogin--"+userMapper.accountLogin(userLoginModel));
         return userMapper.accountLogin(userLoginModel);
 
     }
@@ -24,9 +23,6 @@ public class UserService {
     //setPassword
     public void setPassword(UserEntity userEntity ){
          userMapper.setPassword(userEntity);
-    }
-    public void setNativeCode(UserEntity userEntity ){
-         userMapper.setNativeCode(userEntity);
     }
 
     public void firstSet(UserEntity userEntity) {

@@ -11,18 +11,11 @@
     <link rel="stylesheet" href="/css/index.css">
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="js/nchu.js"></script>
     <style>
-        #bg-over {
-            background-size: 1500px auto;
-            width: 4500px;
-            transform: translate3d(0, 0, 0);
-            background: #348cb2 url(https://blog.52itstyle.com/bg.jpg) bottom left;
-            background-repeat: repeat-x;
-            height: 100%;
-            left: 0;
-            opacity: 1;
-            position: fixed;
-            top: 0;
+        .commentList button{
+            height: 20px;
+            outline: none;
         }
     </style>
 </head>
@@ -52,24 +45,22 @@
                 </li>
                 <li role="presentation"><a href="#">Messages</a></li>
             </ul>
-            <!--帖子展示-->
-
+            <!--帖子详情展示-->
             <div class="media">
-                <div class="media-left">
+                <div>
                     <a href="#">
-                        <img style="width: 40px; box-shadow: 1px 1px 2px midnightblue; " class="media-object img-circle"
-                             th:src="${session.postMap.get('postUser').avatar}"
+                        <img style="display: inline;width: 40px; box-shadow: 1px 1px 2px midnightblue; " class="media-object img-circle"
+                             th:src="${session.postMap.postUser.avatar}"
                              th:alt="${session.postMap.postDetail.title}">
                     </a>
+                    <span class="media-heading text-primary" style="font-family:'宋体';line-height: 40px"
+                        th:text="${session.postMap.postUser.nickName}"></span>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading text-primary" style="font-family:'宋体';line-height: 40px"
-                        th:text="${session.postMap.get('postUser').nickName}"></h4>
-                    <br>
-                    <h3 class="media-heading text-primary" style="font-family:'楷体'"
+                    <h3 class="media-heading text-primary" style="font-family:'楷体';text-align: center"
                         th:text="${session.postMap.postDetail.title}"></h3>
                     <!--操作图标-->
-                    <div style="margin: 8px;" th:if="${session.userEntity}!=null">
+                    <div style="margin: 8px;text-align: center" th:if="${session.userEntity}!=null">
                         <div th:if="${session.postMap.postUser.stuId}==${session.userEntity.stuId}">
                             <a th:href="@{/post/editPost}">
                                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -81,11 +72,11 @@
 
                     </div>
 
-                    <span class="text-muted">
+                    <p class="text-muted" style="text-align: center">
                             <span th:text="${session.postMap.postDetail.readCount}"></span> 阅读 ·
                             <span th:text="${session.postMap.postDetail.commentCount}"></span> 评论 ·
                             <span th:text="${#dates.format(session.postMap.postDetail.createTime,'MM-dd HH:mm')}"></span>
-                    </span>
+                    </p>
                     <hr>
                     <br>
                     <h4><span class="text-justify" th:text="${session.postMap.postDetail.content}"></span><br></h4>
@@ -98,20 +89,132 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">评论区</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body commentList" style="padding: 8px">
+                        <!--评论列表-->
+                        <ul class="media-list" th:each="comment : ${comments}">
+                            <li class="media" style="margin-bottom: 0px;">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object" th:src="${comment.comment.avatar}" alt="..."
+                                             style="width: 32px">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="media-heading" th:text="${comment.comment.nickName}"
+                                        style="line-height: 32px"></h5>
+                                    <h5 th:text="${comment.comment.content}"></h5>
+                                    <button style="background: none;border: none" onclick="">
+                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                    </button>
+                                    <button style="background: none;border: none" th:onclick="|showReply(${comment.comment.commentId})|">
+                                        <h6 class="text-info">查看回复</h6>
+                                    </button>
+                                    <!--to评论 输入框显示按钮-->
+                                    <button style="background: none;border: none" th:onclick="|commentReply(${comment.comment.stuId},${comment.comment.commentId})|">
+                                        <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                                    </button>
+                                    <hr style="margin-bottom: 10px;margin-top: 10px">
+                                    <!--回复列表-->
+                                    <div th:id="replyList+${comment.comment.commentId}" style="display: none">
+                                        <ul class="media-list"  th:each="reply:${comment.replyList}">
+                                            <li class="media">
+                                                <div class="media-left">
+                                                    <a href="#">
+                                                        <img class="media-object" th:src="${reply.avatar}" alt="..."
+                                                             style="width:32px">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h5 class="media-heading" style="line-height: 32px">
+                                                        <span th:text="${reply.nickName}"></span>
+                                                        <span>回复</span>
+                                                        <span th:text="${reply.toNickName}"></span>
+                                                    </h5>
+                                                    <h5 th:text="${reply.content}"></h5>
+                                                    <!--回复点赞-->
+                                                    <button style="background: none;border: none" onclick="">
+                                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                                    </button>
+                                                    <!--to回复 输入框显示按钮-->
+                                                    <button style="background: none;border: none" th:onclick="|commentReply(${reply.stuId},${comment.comment.commentId})|" >
+                                                        <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                                                    </button>
+                                                    <hr style="margin-bottom: 10px;margin-top: 10px">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
 
+                                    <form th:action="@{/comment/reply/add}" method="post" th:id="commentReplyForm+${comment.comment.commentId}" style="display: none">
+                                        <div class="input-group">
+                                            <input type="hidden" name="commentId" id="commentId" th:value="${comment.comment.commentId}">
+                                            <input type="hidden" name="toId" id="toId" th:value="${comment.comment.stuId}">
+                                            <input type="text" name="content" class="form-control"
+                                                   placeholder="给Ta留个话╰(￣ω￣ｏ)"
+                                                   aria-describedby="basic-addon2">
+                                            <span class="input-group-addon">
+                                                <input type="submit" value='✉' style="background: none;border:none">
+                                            </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
+<!--
+                    <form th:action="@{/comment/add}" method="post">
+                        <div class="input-group">
+                            <input type="hidden" name="postId" id="postId" th:value="${postId}">
+                            <input type="text" name="content" class="form-control" placeholder="留个评论呗╰(￣ω￣ｏ)"
+                                   aria-describedby="basic-addon2">
+                            <span class="input-group-addon" id="basic-addon2">
+                                    <input type="submit" value='发表评论' style="background: none;border:none">
+                                </span>
+                        </div>
+                    </form>
+-->
+                    <div class="input-group">
+                        <input type="hidden" name="postId" id="postId" th:value="${postId}">
+                        <input type="text" name="content" id="commentContent" class="form-control" placeholder="留个评论呗╰(￣ω￣ｏ)"
+                               aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">
+                            <button th:onclick="addComment()" style="background: none;border:none">发表评论</button>
+                                </span>
+                    </div>
+                    <!--<span class="input-group-addon" id="basic-addon2-"></span>-->
+
                 </div>
             </div>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="position: relative;float:left">
             <h2>( ⓛ ω ⓛ *)</h2>
             <!--相关人员-->
             <div class="media">
                 <h2>
                     发布人
                 </h2>
+                <p id="todayInHistory">
+                    3
+                </p>
+                <script>
+                    var xhr2 = new XMLHttpRequest();
+                    xhr2.open('get', 'http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16');
+                    xhr2.onreadystatechange = function () {
+                        if (xhr2.readyState === 4) {
+                            var data = JSON.parse(xhr2.responseText);
+                            var str = "";
+                            for (var onePiece in data.data){
+                                str += "<tr>"+ onePiece.year +"</tr>" +
+                                    "<tr>"+ onePiece.title +"</tr>"
+                            }
+                            var todayInHistory = document.getElementById('todayInHistory');
+                            todayInHistory.innerHTML = str;
+                        }
+                    };
+                    xhr2.send()
+
+                </script>
                 <hr>
                 <div class="media-left">
                     <a href="#">

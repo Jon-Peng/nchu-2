@@ -6,16 +6,22 @@
     <!--查询帖子-->
     <!--查询所有-->
     <select id="selectAllPost" resultType="com.pjy.nchu2.entity.PostEntity">
-        select * from post where status != -1
+        select * from post
+        where status != -1
+        order by create_time DESC
     </select>
     <!--查询指定帖子-ID-->
     <select id="selectOnePostById" resultType="com.pjy.nchu2.entity.PostEntity">
         select * from post
         where post_id = #{postId}
+        order by create_time DESC
     </select>
     <!--查询个人帖子-->
     <select id="selectPersonPost" resultType="com.pjy.nchu2.entity.PostEntity">
-        select * from post where stu_id = #{stuId} and status != -1
+        select * from post
+        where stu_id = #{stuId}
+        and status != -1
+        order by create_time
     </select>
     <!--搜索查询-->
     <select id="searchPost" resultType="com.pjy.nchu2.entity.PostEntity">
@@ -25,6 +31,8 @@
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
         or content
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
+        order by create_time
+
     </select>
     <!--搜索个人帖子-->
     <select id="searchPostById" resultType="com.pjy.nchu2.entity.PostEntity">
@@ -35,6 +43,7 @@
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
         or content
         like CONCAT('%',#{keyword,jdbcType=VARCHAR},'%')
+        order by create_time DESC
     </select>
 
     <!--插入帖子-->
@@ -59,8 +68,9 @@
             is_public = #{isPublic},
             update_time = #{updateTime},
             read_count = #{readCount},
-            status = #{status}
-
+            status = #{status},
+            comment_count = #{commentCount},
+            like_count = #{likeCount}
             /*update_time = current_timestamp*/
         where post_id = #{postId}
     </update>

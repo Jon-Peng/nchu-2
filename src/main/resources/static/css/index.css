@@ -2,15 +2,16 @@
     position: relative;
     top: 50px;
     /*margin: 30px;*/
-    margin: 30px auto;
-    width: 92%;
-}
-.media {
-    margin: 20px auto;
+    margin: 10px auto;
+    width: 97%;
 }
 a {
     text-decoration: none;
     padding: 0;
+}
+hr{
+    margin-top: 10px;
+    margin-bottom: 0px;
 }
 li button{
     height: 40px;

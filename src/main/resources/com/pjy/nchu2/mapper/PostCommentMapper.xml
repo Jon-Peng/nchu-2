@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.pjy.nchu2.mapper.PostCommentMapper">
+
+    <!--帖子-->
+    <!--查询帖子下所有评论-->
+    <select id="selectPostComments" resultType="com.pjy.nchu2.entity.PostCommentEntity">
+        select * from post_comment where post_id = #{postId}
+    </select>
+    <!--查询单个评论-->
+    <select id="selectOneComment" resultType="com.pjy.nchu2.entity.PostCommentEntity">
+        select * from post_comment where comment_id = #{commentId}
+    </select>
+    <!--insert-->
+    <insert id="insertComment">
+        insert into post_comment
+        (post_id,content,like_count,stu_id,create_time,nick_name,avatar,update_time)
+        values (#{postId},#{content},#{likeCount},#{stuId},#{createTime},#{nickName},#{avatar},current_timestamp)
+    </insert>
+    <!--update-->
+    <update id="updateComment">
+        update post_comment
+        set
+            content = #{content},
+            reply_count = #{replyCount},
+            like_count = #{likeCount},
+            status = #{status},
+            nick_name = #{nickName},
+            avatar = #{avatar},
+            update_time = #{updateTime}
+        where comment_id = #{commentId}
+    </update>
+    <!--查询个人帖子-->
+    <select id="selectPersonPost" resultType="com.pjy.nchu2.entity.PostEntity">
+        select * from post where stu_id = #{stuId} and status != -1
+    </select>
+
+
+
+    <!--回复-->
+    <!--查询评论下所有回复-->
+    <select id="selectCommentReply" resultType="com.pjy.nchu2.entity.CommentReplyEntity">
+        select * from comment_reply
+        where comment_id = #{commentId}
+    </select>
+    <insert id="insertCommentReply">
+        insert into comment_reply
+        (comment_id,stu_id,to_id,content,nick_name,to_nick_name,avatar,create_time,update_time)
+        values (#{commentId},#{stuId},#{toId},#{content},#{nickName},#{toNickName},#{avatar},#{createTime},#{updateTime})
+    </insert>
+
+</mapper>

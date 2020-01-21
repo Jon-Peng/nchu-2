@@ -55,7 +55,7 @@ public class UserController {
             System.out.println("--登录返回model--"+userLoginModel);
             //取QQ号
             String qq = userEntity.getQQ();
-            String qqInfoApi = "https://api.uomg.com/api/qq.info?qq=" + userEntity.getQQ();
+            String qqInfoApi = "https://api.uomg.com/api/qq.info?qq=" + qq;
             //调用工具类 获取qq信息【昵称.头像】
             String qqInfo = new GetApiDataUtil().getData(qqInfoApi);
             System.out.println("--QQ信息--" + qqInfo);

@@ -64,14 +64,19 @@ public class PostController {
     //帖子详情
     @GetMapping("/post/{postId}")
     public String postDetail(HttpServletRequest request,
-                             @PathVariable(name = "postId") int postId){
+                             @PathVariable(name = "postId") int postId,
+                             Model model){
         PostEntity postDetail = postService.selectOnePost(postId);
+        System.out.println("postDetail@@@@@@@@@@@@$"+postDetail);
         if (postDetail == null) {
+            model.addAttribute("error","哎呀！帖子已经不见啰(￣、￣)");
+            model.addAttribute("code",201);
             return "error";
         }
         UserEntity userEntity = userService.getUser(postDetail.getStuId());
         if (userEntity == null) {
             userEntity.setNickName("该账户已注销");
+
         }
         Map postDetailMap = new HashMap<>();
         postDetailMap.put("postDetail",postDetail);
@@ -81,7 +86,8 @@ public class PostController {
         postDetail.setReadCount(postDetail.getReadCount()+1);//修改阅读数
         System.out.println("浏览量"+postDetail.getReadCount()+1);
         postService.updatePost(postDetail);
-        return "post/postDetail";
+        request.setAttribute("postId",postId);
+        return "redirect:/comment?postId="+postId;//转至评论control
     }
 
     //搜索帖子

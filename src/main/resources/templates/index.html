@@ -12,10 +12,20 @@
     <link rel="stylesheet" href="/css/index.css">
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script>
+        var ele = document.createElement('script');
+        ele.src = 'http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16';
+        ele.type = 'text/javascript';
+        ele.language = 'javascript';
+        document.getElementsByTagName("head")[0].appendChild(ele);
+        ele.onload = function(){
+            alert(json.msg);
+        };
+    </script>
 </head>
 
 
-<body class="body" id="body" style="background-image: url('https://api.sanv.org/api/bingtodayimg/timthumb.php?src=https://api.sanv.org/api/bingtodayimg/savebingimg_cn/2020_01_16.jpg&h=900&w=1400&zc=1')">
+<body class="body" id="body" style="background-image: url('https://api.sanv.org/api/bingtodayimg/timthumb.php?src=https://api.sanv.org/api/bingtodayimg/savebingimg_cn/2020_01_16.jpg&h=1000&w=1400&zc=1')">
 <script>
     var nowDate = new Date().getFullYear() + '_' + new Date().getMonth()+1 + '_' + new Date().getDate();
     console.log(nowDate);
@@ -55,7 +65,7 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading text-primary" style="font-family:'楷体'" th:text="${postUserEntry.value.nickName}"></h4>
+                    <h4 class="media-heading text-primary" style="font-family:'楷体';line-height: 42px" th:text="${postUserEntry.value.nickName}"></h4>
                     <span class="text-justify" th:text="${postUserEntry.key.title}"></span> <!--标题-->
                     <a th:href="@{'/post/'+${postUserEntry.key.postId}}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a><!--图标-->
                     <br>
@@ -110,7 +120,7 @@
             </nav>
 
         </div>
-        <div class="col-md-3" style="background: rgba(255,255,255,0.85); margin-left: 10px; width: 300px; border-radius: 3px;">
+        <div class="col-md-3" style="background: rgba(255,255,255,0.85); margin-left: 10px; width: 300px; border-radius: 3px;position: relative;float: left">
             <h2>( ⓛ ω ⓛ *)</h2>
             <h3>这位同学你已存活<span id="liveDays" th:text="${session.liveDays}"></span>天</h3>
             <!--古诗-->
@@ -137,29 +147,36 @@
                 </script>
             </div>
             <div>
-                <p id="todayInHistory">
-                    3
-                </p>
                 <script>
-                    var xhr2 = new XMLHttpRequest();
-                    xhr2.open('get', 'http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16');
-                    xhr2.onreadystatechange = function () {
-                        if (xhr2.readyState === 4) {
-                            var data = JSON.parse(xhr2.responseText);
-                            var str = "";
-                            for (var onePiece in data.data){
-                                str += "<tr>"+ onePiece.year +"</tr>" +
-                                       "<tr>"+ onePiece.title +"</tr>"
-                            }
-                            var todayInHistory = document.getElementById('todayInHistory');
-                            todayInHistory.innerHTML = str;
-                        }
-                    };
-                    xhr2.send()
+                    window.onload= function (ev) {
+                        $.ajax({
+                            type: "GET",
+                            url: "http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16",
+                            contentType: 'application/json',
+                            /*data: JSON.stringify({
+                                "postId": postId,
+                                "content": content,
+                            }),*/
+                            jsonp:"",
+                            success: function (response) {
+
+                                if (response.code == 200) {
+                                    alert("200-通过");
+                                    window.location.reload();
+                                } else {
+
+                                }
+                            },
+                            dataType: "json"
+                        });
+                    }
                 </script>
-                <script >
-                    function dosomething(jondata) {
-                        console.log(jondata)
+                <script type="application/javascript" >
+                    function dosomething(code,data,msg) {
+                        console.log("哭唧唧00")；
+                        console.log(data);
+                        console.log(msg);
+                        alert("haha")
                     }
                 </script>
                 <script src="http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16&callback=dosomething"></script>
