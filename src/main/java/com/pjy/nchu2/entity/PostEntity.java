@@ -9,13 +9,13 @@ import java.sql.Timestamp;
 public class PostEntity {
     private int postId;
     private String title;
-    private int commentCount;
-    private int readCount;
-    private int likeCount;
+    private int commentCount; //
+    private int readCount; //
+    private int likeCount; //
     private Timestamp createTime;
     private Timestamp updateTime;
     private boolean isRelease; //
-    private int keepCount;
+    private int keepCount; //
     private int stuId;
     private int type;
     private Timestamp releaseTime;

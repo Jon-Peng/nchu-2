@@ -44,8 +44,6 @@ public class CommentController {
         List<PostCommentEntity> list = commentService.getPostComments(postId);
         System.out.println("评论列表@@@@@@@@@" + list);
         List<Map> commentList = new ArrayList();
-
-//        map.put("commentList",list);
         for (PostCommentEntity comment : list) {
             Map map = new HashMap();
             map.put("comment", comment);
@@ -123,7 +121,7 @@ public class CommentController {
         postService.updatePost(post);
         //更新comment回复数
         PostCommentEntity commentEntity = commentService.getOneComment(commentId);
-        commentEntity.setReplyCount(commentEntity.getReplyCount());
+        commentEntity.setReplyCount(commentEntity.getReplyCount()+1);
         commentService.updateComment(commentEntity);
 
         return "redirect:/post/" + post.getPostId();

@@ -14,10 +14,10 @@ public class CommentReplyEntity {
     private String nickName;
     private String toNickName;
     private String avatar;
-    private int likeCount = -1;
+    private int likeCount;
     private int status = 0;
     private Date createTime;
     private Date updateTime;
-
+    private boolean read;
 
 }

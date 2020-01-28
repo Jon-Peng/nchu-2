@@ -16,7 +16,6 @@ public class GetApiDataUtil {
             httpURLConnection.setDoInput(true);
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.connect();
-
             //
             InputStream is = httpURLConnection.getInputStream();
             InputStreamReader isr = new InputStreamReader(is, "utf-8");

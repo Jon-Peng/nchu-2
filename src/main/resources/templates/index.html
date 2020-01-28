@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
     <link rel="icon" href="/images/paperPlane.gif">
     <title>NCHU</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -12,50 +12,41 @@
     <link rel="stylesheet" href="/css/index.css">
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
-    <script>
-        var ele = document.createElement('script');
-        ele.src = 'http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16';
-        ele.type = 'text/javascript';
-        ele.language = 'javascript';
-        document.getElementsByTagName("head")[0].appendChild(ele);
-        ele.onload = function(){
-            alert(json.msg);
-        };
-    </script>
+    <script src="/js/nchu.js"></script>
+    <script src="/js/api.js"></script>
 </head>
 
 
-<body class="body" id="body" style="background-image: url('https://api.sanv.org/api/bingtodayimg/timthumb.php?src=https://api.sanv.org/api/bingtodayimg/savebingimg_cn/2020_01_16.jpg&h=1000&w=1400&zc=1')">
-<script>
-    var nowDate = new Date().getFullYear() + '_' + new Date().getMonth()+1 + '_' + new Date().getDate();
-    console.log(nowDate);
-    document.getElementById("body").style="background-image: url('https://api.sanv.org/api/bingtodayimg/timthumb.php?src=https://api.sanv.org/api/bingtodayimg/savebingimg_cn/"+
-            nowDate + ".jpg&h=900&w=1400&zc=1')"
-</script>
+<body class="body" id="body"
+      style="background-attachment: fixed; background-image: url('https://api.sanv.org/api/bingtodayimg/timthumb.php?src=https://api.sanv.org/api/bingtodayimg/savebingimg_cn/2020_01_16.jpg&h=1000&w=1400&zc=1');
+             ">
+
 <!--导航栏-->
 <nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
 </nav>
-<!--<div id="bg-over">
-</div>-->
+
 <!--content-->
 <div class="container-fluid content">
     <div class="row">
-        <div class="col-xs-12 col-md-9" style="background: rgba(255,255,255,0.95);border-radius: 3px;">
+
+        <div class="col-xs-12 col-md-8" style="background: rgba(255,255,255,0.95);border-radius: 3px;">
             <ul class="nav nav-tabs">
                 <li role="presentation" class="active">
-                    <a th:href="@{/}">
+                    <a th:href="@{/}" >
                         Home
                     </a>
                 </li>
                 <li role="presentation">
-                    <a th:href="@{/post/toPublish}">
+                    <a th:href="@{/post/toPublish}" target="_blank">
                         发帖
                     </a>
                 </li>
-                <li role="presentation"><a href="#">Messages</a></li>
+                <li role="presentation">
+                    <a href="/user/userInfo.html">Messages</a>
+                </li>
             </ul>
-            <!--帖子展示-->
 
+            <!--帖子展示-->
             <div class="media" th:each="postUserEntry : ${session.postUserMap}">
                 <div class="media-left">
                     <a href="#">
@@ -65,9 +56,11 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading text-primary" style="font-family:'楷体';line-height: 42px" th:text="${postUserEntry.value.nickName}"></h4>
+                    <h4 class="media-heading text-primary" style="font-family:'楷体';line-height: 42px"
+                        th:text="${postUserEntry.value.nickName}"></h4>
                     <span class="text-justify" th:text="${postUserEntry.key.title}"></span> <!--标题-->
-                    <a th:href="@{'/post/'+${postUserEntry.key.postId}}"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a><!--图标-->
+                    <a th:href="@{'/post/'+${postUserEntry.key.postId}}"><span class="glyphicon glyphicon-chevron-right"
+                                                                               aria-hidden="true"></span></a><!--图标-->
                     <br>
                     <span class="text-muted">
                             <span th:text="${postUserEntry.key.readCount}"></span> 阅读 ·
@@ -84,8 +77,8 @@
                     <li th:if="${session.pageInfo.hasPreviousPage}">
                         <a th:href="'?page=1'">首页</a>
                     </li>
-                    <li>
-                        <a href="#" aria-label="Previous">
+                    <li th:if="${session.pageInfo.hasPreviousPage}">
+                        <a th:href="@{(page=${session.pageInfo.pageNum}-1)}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -93,20 +86,24 @@
                         <a th:href="@{(page=${session.pageInfo.pageNum}-1)}">上一页</a>
                     </li>
                     <li th:if="${session.pageInfo.pageNum}>2">
-                        <a th:href="@{/(page=${session.pageInfo.pageNum}-2)}"><span th:text="${session.pageInfo.pageNum}-2"></span></a>
+                        <a th:href="@{/(page=${session.pageInfo.pageNum}-2)}"><span
+                                th:text="${session.pageInfo.pageNum}-2"></span></a>
                     </li>
                     <li th:if="${session.pageInfo.pageNum}>1">
-                        <a th:href="@{/(page=${session.pageInfo.pageNum}-1)}"><span th:text="${session.pageInfo.pageNum}-1"></span></a>
+                        <a th:href="@{/(page=${session.pageInfo.pageNum}-1)}"><span
+                                th:text="${session.pageInfo.pageNum}-1"></span></a>
                     </li>
                     <!--当前页-->
                     <li class="active disabled">
-                        <a href="#"><span th:text="${session.pageInfo.pageNum}"></span></a>
+                        <a><span th:text="${session.pageInfo.pageNum}"></span></a>
                     </li>
                     <li th:if="${session.pageInfo.pageNum}+1<=${session.pageInfo.pages}">
-                        <a th:href="@{/(page=${session.pageInfo.pageNum}+1)}"><span th:text="${session.pageInfo.pageNum}+1"></span></a>
+                        <a th:href="@{/(page=${session.pageInfo.pageNum}+1)}"><span
+                                th:text="${session.pageInfo.pageNum}+1"></span></a>
                     </li>
                     <li th:if="${session.pageInfo.pageNum}+2<=${session.pageInfo.pages}">
-                        <a th:href="@{/(page=${session.pageInfo.pageNum}+2)}"><span th:text="${session.pageInfo.pageNum}+2"></span></a>
+                        <a th:href="@{/(page=${session.pageInfo.pageNum}+2)}"><span
+                                th:text="${session.pageInfo.pageNum}+2"></span></a>
                     </li>
                     <li th:if="${session.pageInfo.hasNextPage}">
                         <a th:href="@{/(page=${session.pageInfo.pageNum}+1)}">下一页</a>
@@ -118,79 +115,28 @@
                     </li>
                 </ul>
             </nav>
-
         </div>
-        <div class="col-md-3" style="background: rgba(255,255,255,0.85); margin-left: 10px; width: 300px; border-radius: 3px;position: relative;float: left">
-            <h2>( ⓛ ω ⓛ *)</h2>
-            <h3>这位同学你已存活<span id="liveDays" th:text="${session.liveDays}"></span>天</h3>
-            <!--古诗-->
+        <div class="col-xs-12 col-md-3"
+             style="background: rgba(255,255,255,0.85); margin-left: 10px; border-radius: 3px;position: relative;float: left">
+            <h4>( ⓛ ω ⓛ *)</h4>
             <hr>
+            <!--古诗-->
             <div>
                 <h4 id="gushiContent">1</h4>
                 ---《<span id="gushiName"></span>》
                 <span id="gushiAuthor">2</span>
-                <script>
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('get', 'https://v1.jinrishici.com/all.json');
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4) {
-                            var data = JSON.parse(xhr.responseText);
-                            var gushici = document.getElementById('gushiContent');
-                            gushici.innerHTML = data.content;
-                            var gushiAuthor = document.getElementById('gushiAuthor');
-                            gushiAuthor.innerHTML = data.author;
-                            var gushiAuthor = document.getElementById('gushiName');
-                            gushiAuthor.innerHTML = data.origin;
-                        }
-                    };
-                    xhr.send()
-                </script>
             </div>
+            <hr>
             <div>
-                <script>
-                    window.onload= function (ev) {
-                        $.ajax({
-                            type: "GET",
-                            url: "http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16",
-                            contentType: 'application/json',
-                            /*data: JSON.stringify({
-                                "postId": postId,
-                                "content": content,
-                            }),*/
-                            jsonp:"",
-                            success: function (response) {
-
-                                if (response.code == 200) {
-                                    alert("200-通过");
-                                    window.location.reload();
-                                } else {
-
-                                }
-                            },
-                            dataType: "json"
-                        });
-                    }
-                </script>
-                <script type="application/javascript" >
-                    function dosomething(code,data,msg) {
-                        console.log("哭唧唧00")；
-                        console.log(data);
-                        console.log(msg);
-                        alert("haha")
-                    }
-                </script>
-                <script src="http://www.jiahengfei.cn:33550/port/history?dispose=detail&key=jiahengfei&month=1&day=16&callback=dosomething"></script>
+                <img width="270px" id="ciba" src="" alt="">
             </div>
+            <hr>
+            <div id="history"></div>
+            <hr>
+            <div id="news"></div>
+            <hr>
         </div>
-
     </div>
 </div>
-
-<script th:inline="javascript">
-    function changeMusic() {
-        var a = document.getElementById('changeMusic');
-        a.src = 'https://api.uomg.com/api/rand.music';
-    }
-</script>
 </body>
 </html>

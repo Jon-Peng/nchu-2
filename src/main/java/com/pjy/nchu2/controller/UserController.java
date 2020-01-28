@@ -71,13 +71,6 @@ public class UserController {
                 String idNum = userEntity.getIdNum();
 //                String native_code = idNum.substring(0, 6);//获取身份证前六位
                 idNum = idNum.substring(12);//获取身份证后六位
-
-//                userEntity.setPassword(idNum);
-//                userEntity.setNative_code(native_code);
-//                System.out.println(userEntity);
-
-//                userService.setPassword(userEntity);//设为密码
-//                userService.setNativeCode(userEntity);//设置native_code
                 userEntity.setAvatar(qim.qlogo);//头像地址
                 userEntity.setNickName(qim.getName());
                 userService.firstSet(userEntity);
@@ -154,8 +147,15 @@ public class UserController {
     //api
     @ResponseBody
     @GetMapping("/api/user/info")
-    public JsonResult apiUserInfo(@RequestParam(name = "stuId") int stuid){
-        UserEntity userEntity = userService.getUser(stuid);
+    public JsonResult apiUserInfo(@RequestParam(name = "stuId") int stuId){
+        UserEntity userEntity = userService.getUser(stuId);
+        return new JsonResult(userEntity);
+    }
+
+    @ResponseBody
+    @PostMapping("/api/user/info/post")
+    public JsonResult apiUserInfoPost(@RequestParam(name = "stuId") int stuId){
+        UserEntity userEntity = userService.getUser(stuId);
         return new JsonResult(userEntity);
     }
     //捉小猫

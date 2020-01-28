@@ -2,9 +2,12 @@ package com.pjy.nchu2.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.pjy.nchu2.entity.CommentReplyEntity;
+import com.pjy.nchu2.entity.PostCommentEntity;
 import com.pjy.nchu2.entity.PostEntity;
 import com.pjy.nchu2.entity.UserEntity;
 import com.pjy.nchu2.model.AddTextPostModel;
+import com.pjy.nchu2.service.CommentService;
 import com.pjy.nchu2.service.PostService;
 import com.pjy.nchu2.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,8 @@ public class PostController {
     private PostService postService;
     @Resource
     private UserService userService;
+    @Resource
+    private CommentService commentService;
 
     @GetMapping("/post/toPublish")
     public String toAdd() {
@@ -37,7 +42,6 @@ public class PostController {
                               HttpServletRequest request
 //                              @RequestParam(value = "postId", required = false) int postId,
                              ) {
-
         UserEntity userEntity = (UserEntity) request.getSession().getAttribute("userEntity");
         if (userEntity == null) {
             request.setAttribute("error", "小伙子，没登录就想发帖嘛！");
@@ -61,6 +65,7 @@ public class PostController {
         }
         return "redirect:/";
     }
+
     //帖子详情
     @GetMapping("/post/{postId}")
     public String postDetail(HttpServletRequest request,
@@ -76,18 +81,31 @@ public class PostController {
         UserEntity userEntity = userService.getUser(postDetail.getStuId());
         if (userEntity == null) {
             userEntity.setNickName("该账户已注销");
-
         }
         Map postDetailMap = new HashMap<>();
         postDetailMap.put("postDetail",postDetail);
         postDetailMap.put("postUser",userEntity);
         request.getSession().setAttribute("postMap",postDetailMap);
 
+        //评论回复
+        List<PostCommentEntity> list = commentService.getPostComments(postId);
+        List<Map> commentList = new ArrayList();
+        for (PostCommentEntity comment : list) {
+            Map map = new HashMap();
+            map.put("comment", comment);
+            List<CommentReplyEntity> replyList = commentService.getCommentReply(comment.getCommentId());
+            map.put("replyList", replyList);
+            commentList.add(map);
+        }
+        model.addAttribute("comments", commentList);
+        model.addAttribute("postId", postId);
+//        request.setAttribute("postId",postId);
+
         postDetail.setReadCount(postDetail.getReadCount()+1);//修改阅读数
-        System.out.println("浏览量"+postDetail.getReadCount()+1);
+        System.out.println("浏览量"+ postDetail.getReadCount());
         postService.updatePost(postDetail);
-        request.setAttribute("postId",postId);
-        return "redirect:/comment?postId="+postId;//转至评论control
+
+        return "post/postDetail";
     }
 
     //搜索帖子

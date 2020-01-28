@@ -1,45 +1,3 @@
-/**
- * 提交回复
- */
-function post() {
-    var postId = $("#post_id").val();
-    var content = $("#comment_content").val();
-    comment2target(postId, 1, content);
-}
-
-function comment2target(targetId, type, content) {
-    if (!content) {
-        alert("不能回复空内容~~~");
-        return;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "/comment/add",
-        contentType: 'application/json',
-        data: JSON.stringify({
-            "postId": targetId,
-            "content": content,
-            "type": type
-        }),
-        success: function (response) {
-            if (response.code == 200) {
-                window.location.reload();
-            } else {
-                if (response.code == 2003) {
-                    var isAccepted = confirm(response.message);
-                    if (isAccepted) {
-                        window.open("https://github.com/login/oauth/authorize?client_id=2859958f9f059979ed3a&redirect_uri=" + document.location.origin + "/callback&scope=user&state=1");
-                        window.localStorage.setItem("closable", true);
-                    }
-                } else {
-                    alert(response.message);
-                }
-            }
-        },
-        dataType: "json"
-    });
-}
 
 /**
  * 添加评论
@@ -62,18 +20,11 @@ function addComment(){
         success: function (response) {
             if (response.code == 200) {
                 alert("200-通过");
+                console.log("评论添加成功");
                 window.location.reload();
+                // window.location.reload();
             } else {
-                if (response.code == 2003) {
-                    var isAccepted = confirm(response.message);
-                    if (isAccepted) {
-                        /*window.open( "");
-                        window.localStorage.setItem("closable", true);*/
-                        alert("emmm")
-                    }
-                } else {
                     alert(response.message);
-                }
             }
         },
         dataType: "json"
