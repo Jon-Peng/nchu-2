@@ -18,7 +18,6 @@
 
 <body class="body" style="background: whitesmoke;">
 <!--导航栏-->
-<!--导航栏-->
 <nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
 </nav>
 <!--<div id="bg-over">
@@ -26,6 +25,7 @@
 <!--content-->
 <div class="container-fluid content">
     <div class="row" style="background:rgb(250 255 250); box-shadow: 0px 5px 15px grey;border-radius: 18px;">
+
         <div class="col-xs-12 col-md-9">
             <br>
             <ul class="nav nav-tabs">
@@ -107,8 +107,10 @@
             </nav>
 
         </div>
+
         <div class="col-md-3">
             <h2>( ⓛ ω ⓛ *)</h2>
+
             <!--搜索框-->
             <form class="navbar-form navbar-left" th:action="@{/post/search}">
                 <div class="form-group">
@@ -116,8 +118,9 @@
                     <input type="hidden" name="stuId" th:value="${session.userEntity.stuId}">
                 </div>
                 <button type="submit" class="btn btn-default">搜索</button>
-                <a th:href="@{/user/catGame}" style="margin: 0 15px 0 15px">🐱</a>
+
             </form>
+
             <div class="btn-group-vertical" role="group" aria-label="...">
                 <button class="btn btn-primary" type="button">
                     Messages <span class="badge">1</span>
@@ -148,38 +151,12 @@
     </div>
 </div>
 
-<each>
-
-</each>
-
 
 <script th:inline="javascript">
     function changeMusic() {
         var a = document.getElementById('changeMusic');
         a.src = 'https://api.uomg.com/api/rand.music';
     }
-    // window.onload=function () {
-    //     countLiveDays();
-    //     document.getElementById("liveDays").innerHTML=countLiveDays();
-    // }
-    // function countLiveDays() {
-    //     // var idNum = (String)[[${session.userEntity.idNum}]];
-    //     var idNum = sessionStorage.getItem("userEntity").idNum;
-    //     var year = idNum.substring(6,10);
-    //     var month = idNum.substring(10,12);
-    //     var day = idNum.substring(12,14);
-    //     console.log('生日=='+year+month+day);
-    //     // var birthday = year+'-'+month+'-'+day;
-    //     var birthday = new Date(year,month,day);
-    //     // var s = new SimpleDateFormat("yyyy-MM-dd");
-    //     // var old = s.parse(birthday).getTime();
-    //     var old = birthday.getTime();
-    //     var now = new Date().getTime();
-    //     console.log('出生'+old+'现在'+now);
-    //     var days = (now-old)/(24*60*60*1000);
-    //     console.log('天数'+days);
-    //     document.getElementById("liveDays").innerHTML=parseInt(days);
-    // }
 </script>
 </body>
 </html>

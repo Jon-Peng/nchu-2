@@ -1,7 +1,6 @@
 package com.pjy.nchu2.mapper;
 
 import com.pjy.nchu2.entity.PostEntity;
-import com.pjy.nchu2.model.AddTextPostModel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -32,7 +32,6 @@ public class IndexController {
 
     @GetMapping("/") //默认访问
     public String index(HttpServletRequest request,
-                        HttpServletResponse response,
                         @RequestParam(name="page",defaultValue = "1") int page,
                         @RequestParam(name="size",defaultValue = "10") int size
                         ){
@@ -44,7 +43,7 @@ public class IndexController {
         List postList = postService.allPostList();//获取所有帖子列表
         PageInfo<PostEntity> pageInfo = new PageInfo<>(postList);//使用pageInfo进行包装
         request.getSession().setAttribute("pageInfo",pageInfo);//存入session
-        System.out.println(pageInfo);
+//        System.out.println(pageInfo);
         postList = pageInfo.getList();
         Map<PostEntity, UserEntity> map = new HashMap<>();//创建帖子:用户 map对想
         for(int i=0 ;i<postList.size();i++){

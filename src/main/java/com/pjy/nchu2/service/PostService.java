@@ -4,7 +4,6 @@ import com.pjy.nchu2.entity.PostEntity;
 import com.pjy.nchu2.entity.PostImageEntity;
 import com.pjy.nchu2.mapper.PostImageMapper;
 import com.pjy.nchu2.mapper.PostMapper;
-import com.pjy.nchu2.model.AddTextPostModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

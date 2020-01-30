@@ -1,8 +1,7 @@
 package com.pjy.nchu2.mapper;
 
 import com.pjy.nchu2.entity.UserEntity;
-import com.pjy.nchu2.model.UserLoginModel;
-import org.apache.catalina.User;
+import com.pjy.nchu2.model.user.UserLoginModel;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

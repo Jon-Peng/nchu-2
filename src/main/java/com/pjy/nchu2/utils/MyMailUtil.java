@@ -16,7 +16,7 @@ public class MyMailUtil {
         account.setUser("2689659610@qq.com"); //假邮箱，请自己申请真实邮箱
         account.setPass("bjriurxygmrvddce"); //假密码，请自己申请真实邮箱
 
-        MailUtil.send(account,mailTo, "hutool 测试邮件" + DateUtil.now(), mailContent, false);
+        MailUtil.send(account,mailTo, "PJY-测试邮件-驗證碼" + DateUtil.now(), mailContent, false);
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pjy.nchu2.mapper.UserMapper">
-    <select id="accountLogin" parameterType="com.pjy.nchu2.model.UserLoginModel" resultType="com.pjy.nchu2.entity.UserEntity">
+    <select id="accountLogin" parameterType="com.pjy.nchu2.model.user.UserLoginModel" resultType="com.pjy.nchu2.entity.UserEntity">
         select * from civil_e
         where stu_id = #{stuId} and password = #{password}
     </select>

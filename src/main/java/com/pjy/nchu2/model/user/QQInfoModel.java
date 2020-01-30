@@ -1,4 +1,4 @@
-package com.pjy.nchu2.model;
+package com.pjy.nchu2.model.user;
 
 import lombok.Data;
 

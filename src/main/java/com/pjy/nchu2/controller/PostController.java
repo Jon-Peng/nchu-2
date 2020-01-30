@@ -6,7 +6,7 @@ import com.pjy.nchu2.entity.CommentReplyEntity;
 import com.pjy.nchu2.entity.PostCommentEntity;
 import com.pjy.nchu2.entity.PostEntity;
 import com.pjy.nchu2.entity.UserEntity;
-import com.pjy.nchu2.model.AddTextPostModel;
+import com.pjy.nchu2.model.post.AddTextPostModel;
 import com.pjy.nchu2.service.CommentService;
 import com.pjy.nchu2.service.PostService;
 import com.pjy.nchu2.service.UserService;

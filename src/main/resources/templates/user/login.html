@@ -11,6 +11,7 @@
 <!--    <link rel="import" href="index.html" id="page1"/>-->
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/nchu.js"></script>
 </head>
 <body style="
 
@@ -23,32 +24,17 @@
 <nav class="navbar navbar-default navbar-fixed-top" th:include="nav::navPart">
 </nav>
 
-<!--登录表单-->
-<!--<form action="#" th:action="@{/user/login}" method="post" th:object="${userLoginModel}" modelAttribute="userLoginModel">-->
-<!--    <div class="input-group">-->
-<!--        <span class="input-group-addon" id="basic-addon1">- 账号 -</span>-->
-<!--        <input type="text" th:field="*{stuId}" class="form-control" value="" placeholder="Username"-->
-<!--               aria-describedby="basic-addon1">-->
-<!--    </div>-->
-<!--    <br>-->
-<!--    <div class="input-group">-->
-<!--        <input type="password" th:field="*{password}" class="form-control" placeholder="Your password"-->
-<!--               aria-describedby="basic-addon2">-->
-<!--        <span class="input-group-addon" id="basic-addon2">- 密码 -</span>-->
-<!--    </div>-->
-<!--    <br>-->
-<!--    <div style="position: relative;left: 100px" class="btn-group" role="group" aria-label="...">-->
-<!--        <button type="submit" class="btn btn-default">登录</button>-->
-<!--    </div>-->
-<!--</form>-->
 
 <div class="container-fluid publish">
     <div class="row">
         <div class=" col-md-10 center-block">
+
             <div class="page-header">
                 <h1>用户登录 <small>Wellcome to NCHU</small></h1>
             </div>
-            <form class="form-horizontal" th:action="@{/user/login}" method="post" th:object="${userLoginModel}">
+
+<!--            <form class="form-horizontal" th:action="@{/user/login}" method="post" th:object="${userLoginModel}">-->
+
                 <div class="form-group">
                     <label for="stuId" class="col-sm-2 control-label">Username</label>
                     <div class="col-sm-10">
@@ -61,6 +47,7 @@
                         <input type="password" name="password" class="form-control" id="password" placeholder="Password">
                     </div>
                 </div>
+
                 <!--    <div class="form-group">-->
                 <!--        <div class="col-sm-offset-2 col-sm-10">-->
                 <!--            <div class="checkbox">-->
@@ -70,12 +57,13 @@
                 <!--            </div>-->
                 <!--        </div>-->
                 <!--    </div>-->
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">登录</button>
+                        <button onclick="login()" class="btn btn-default">登录</button>
                     </div>
                 </div>
-            </form>
+
         </div>
 
     </div>
