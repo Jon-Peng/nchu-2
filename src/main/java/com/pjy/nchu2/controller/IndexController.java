@@ -41,24 +41,29 @@ public class IndexController {
 
         PageHelper.startPage(page,size);//分页助手-后面一个查询分页
         List postList = postService.allPostList();//获取所有帖子列表
-        PageInfo<PostEntity> pageInfo = new PageInfo<>(postList);//使用pageInfo进行包装
+        PageInfo<PostEntity> pageInfo = new PageInfo<PostEntity>(postList);//使用pageInfo进行包装
         request.getSession().setAttribute("pageInfo",pageInfo);//存入session
-//        System.out.println(pageInfo);
         postList = pageInfo.getList();
-        Map<PostEntity, UserEntity> map = new HashMap<>();//创建帖子:用户 map对想
+
+        Map<PostEntity, UserEntity> map = new HashMap<>();//创建帖子:用户 map对象
         for(int i=0 ;i<postList.size();i++){
             PostEntity post = (PostEntity) postList.get(i);
             UserEntity user = userService.getUser(post.getStuId());
             map.put(post,user);
         }
-        System.out.println(map);
+
         request.getSession().setAttribute("postUserMap",map);
         return "index";
     }
 
-    //捉小猫
-//    @GetMapping("/user/catGame")
-//    public String catGame() {
-//        return "catGame";
-//    }
+
+    @GetMapping("/catGame")
+    public String catGame() {
+        return "catGame";
+    }
+
+    @GetMapping("/music")
+    public String music(){
+        return "music";
+    }
 }

@@ -1,8 +1,8 @@
 package com.pjy.nchu2.entity;
 
 import lombok.Data;
-import org.springframework.stereotype.Controller;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Data
@@ -16,8 +16,8 @@ public class CommentReplyEntity {
     private String avatar;
     private int likeCount;
     private int status = 0;
-    private Date createTime;
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
     private boolean read;
 
 }

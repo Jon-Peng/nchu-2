@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +75,7 @@ public class UserController {
         String year = userEntity.getIdNum().substring(6, 10);
         String month = userEntity.getIdNum().substring(10, 12);
         String day = userEntity.getIdNum().substring(12, 14);
-        Date birthday = new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+//        Date birthday = new Date(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
 
         return new JsonResult("登录成功！");
     }
@@ -109,7 +108,6 @@ public class UserController {
     //个人信息
     @GetMapping("/user/info")
     public String userInfo(HttpServletRequest request) {
-
         return "user/userInfo";
     }
 
@@ -135,7 +133,6 @@ public class UserController {
         request.getSession().setAttribute("postPersonMap", map);
         return "user/profile";
     }
-
 
     //捉小猫
     @GetMapping("/user/catGame")

@@ -5,6 +5,7 @@ import com.pjy.nchu2.entity.UserEntity;
 import com.pjy.nchu2.model.user.SignUpModel;
 import com.pjy.nchu2.model.user.UserLoginModel;
 import com.pjy.nchu2.model.user.SendVerifyModel;
+import com.pjy.nchu2.service.AuthService;
 import com.pjy.nchu2.service.RedisService;
 import com.pjy.nchu2.service.UserService;
 import com.pjy.nchu2.utils.JsonResult;
@@ -27,12 +28,12 @@ public class ApiUserController {
     @Autowired
     private UserService userService;
 
+
     @Autowired
-    private RedisService redisService;
+    private AuthService authService;
 
     /**
      * 返回个人资料
-     *
      * @param stuId 学号
      * @return
      */
@@ -45,7 +46,6 @@ public class ApiUserController {
 //        System.out.println(redisService.get("admin"));
         return new JsonResult(userEntity);
     }
-
     @ApiOperation("获取用户资料-POST")
     @ResponseBody
     @PostMapping("/api/user/info")
@@ -56,7 +56,6 @@ public class ApiUserController {
 
     /**
      * 用户登录
-     *
      * @param userLoginModel
      * @param request
      * @return
@@ -71,7 +70,8 @@ public class ApiUserController {
         UserEntity user = userService.getUser(stuId);
         if (user != null) {
             if (user.getPassword().equals(password)) {
-                String token = "--这是一个token--";
+
+                String token = authService.createTokenAndSave(user);//创建并保存token
                 Map map = new HashMap() {{
                     put("token", token);
                 }};

@@ -2,6 +2,9 @@ package com.pjy.nchu2.entity;
 
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Data
 public class UserEntity {
 
@@ -23,6 +26,24 @@ public class UserEntity {
     private String QQ;
     private String email;
 
+    public Map toMap() {
+        HashMap dataMap = new HashMap();
+
+        dataMap.put("stuId", getStuId());
+        dataMap.put("name", getName());
+//        dataMap.put("areaCode", getAreaCode());
+        dataMap.put("phone", getPhone());
+        dataMap.put("avatar", getAvatar());
+        dataMap.put("nickname", getNickName());
+//        dataMap.put("createTime", getCreateTime());
+//        dataMap.put("createTimeStr", TimeUtils.getTimeStr(createTime));
+//        dataMap.put("limited", isLimited());
+//        dataMap.put("lastLoginTime", getLastLoginTime());
+//        dataMap.put("lastLoginTimeStr", TimeUtils.getTimeStr(lastLoginTime));
+//        dataMap.put("handSource", handSource);
+
+        return dataMap;
+    }
 
 
 }

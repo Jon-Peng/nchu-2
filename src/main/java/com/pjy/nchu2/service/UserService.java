@@ -19,16 +19,22 @@ public class UserService {
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private UserService userService;
+
     //查找账户
-    public UserEntity login(UserLoginModel userLoginModel){
+    public UserEntity login(UserLoginModel userLoginModel) {
 
         return userMapper.accountLogin(userLoginModel);
 
     }
 
     //setPassword
-    public void setPassword(UserEntity userEntity ){
-         userMapper.setPassword(userEntity);
+    public void setPassword(UserEntity userEntity) {
+        userMapper.setPassword(userEntity);
     }
 
     public void firstSet(UserEntity userEntity) {
@@ -38,18 +44,32 @@ public class UserService {
     //id获取用户
     public UserEntity getUser(int id) {
 
-        return userMapper.selectOneUser( id);
+        return userMapper.selectOneUser(id);
     }
 
-    //request获取用户
+    /**
+     * 通过request获取用户
+     * @param request
+     * @return 用户对象
+     */
     public UserEntity getUser(HttpServletRequest request) {
-//        token = request.getHeader(tokenName);
-//        redisKey = RedisDefine.K_COMMUNITY_TOKEN_INFO_KEY + token;
+
+        String token = request.getHeader("token");
+//        String redisKey = RedisDefine.NCHU_TOKEN_INFO_KEY + token;
+
+        if (token != null) {
+            String stuId = authService.getIdInToken(token);//token获取id
+            if (stuId == null) {
+                return null;
+            }
+            return getUser(Integer.parseInt(stuId));
+        }
         return null;
     }
 
     /**
      * 检查用户名是否已存在
+     *
      * @param username
      * @return
      */
@@ -60,16 +80,17 @@ public class UserService {
 
     /**
      * 核对验证码是否正确
+     *
      * @param email
      * @param verifivationCode
      * @return
      */
     public boolean checkVerificationCode(String email, String verifivationCode) {
 
-        String redisKey = RedisDefine.NCHU_EMAIL_VERIFY_KEY+email;
+        String redisKey = RedisDefine.NCHU_EMAIL_VERIFY_KEY + email;
 
-        if (redisService.exists(redisKey)){
-            if (redisService.get(redisKey).equals(verifivationCode)){
+        if (redisService.exists(redisKey)) {
+            if (redisService.get(redisKey).equals(verifivationCode)) {
                 return true;
             }
         }
@@ -78,6 +99,7 @@ public class UserService {
 
     /**
      * 创建用户
+     *
      * @param username
      * @param password
      * @param email
@@ -90,10 +112,11 @@ public class UserService {
 
     /**
      * 將驗證碼存入redis
+     *
      * @param email
      * @param code
      */
     public void saveVerifyCode(String email, String code) {
-        redisService.set(RedisDefine.NCHU_EMAIL_VERIFY_KEY+email,code, 10*60);
+        redisService.set(RedisDefine.NCHU_EMAIL_VERIFY_KEY + email, code, 10 * 60);
     }
 }
