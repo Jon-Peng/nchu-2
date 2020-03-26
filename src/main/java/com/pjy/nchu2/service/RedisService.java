@@ -116,7 +116,7 @@ public class RedisService {
 
     public Object get(String key) {
         Object result = null;
-        ValueOperations<Serializable, Object> operations = this.redisTemplate.opsForValue();
+            ValueOperations<Serializable, Object> operations = this.redisTemplate.opsForValue();
         result = operations.get(key);
         return result;
     }

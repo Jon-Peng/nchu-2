@@ -135,8 +135,8 @@ public class UserController {
     }
 
     //捉小猫
-    @GetMapping("/user/catGame")
+    @GetMapping("/test")
     public String catGame() {
-        return "catGame";
+        return "netty";
     }
 }

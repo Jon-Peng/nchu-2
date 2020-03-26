@@ -43,14 +43,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -77,12 +75,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.junit.jupiter</groupId>-->
+<!--            <artifactId>junit-jupiter</artifactId>-->
+<!--            <version>RELEASE</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <!--json-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -96,21 +94,6 @@
             <version>2.4</version>
             <classifier>jdk15</classifier>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>net.sf.json-lib</groupId>-->
-        <!--            <artifactId>json-lib</artifactId>-->
-        <!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>net.sf.json-lib</groupId>-->
-<!--            <artifactId>json-lib-ext-spring</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>log4j</artifactId>-->
-<!--                    <groupId>log4j</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
         <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -170,7 +153,16 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
-
+        <!--  netty依赖 springboot2.0自动导入版本-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+        <!--WebSocket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

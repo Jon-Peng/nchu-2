@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,8 +61,19 @@ public class IndexController {
         return "catGame";
     }
 
-    @GetMapping("/music")
-    public String music(){
-        return "music";
+    @GetMapping("/majiang/101")
+    public String majiang_6000(){
+        return "majiang/majiang_101";
+    }
+
+    @GetMapping("/majiang/127")
+    public String majiang_6001(){
+        return "majiang/majiang_127";
+    }
+
+
+    @GetMapping("/majiang")
+    public String majiang_6003(){
+        return "majiang/majiang_39";
     }
 }

@@ -1,5 +1,6 @@
 package com.pjy.nchu2;
 
+import com.pjy.nchu2.controller.server.NettyServer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +17,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Nchu2Application {
 
     public static void main(String[] args) {
+
         SpringApplication.run(Nchu2Application.class, args);
+        try {
+            new NettyServer(12345).start();
+            System.out.println("https://blog.csdn.net/moshowgame");
+            System.out.println("http://127.0.0.1:6688/netty-websocket/index");
+        }catch(Exception e) {
+            System.out.println("NettyServerError:"+e.getMessage());
+        }
     }
 
     @Bean

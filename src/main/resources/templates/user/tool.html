@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>企惠</title>
+</head>
+<body>
+--<span id="message"></span><br>
+--<span id="json"></span><br>
+--<span id="str"></span><br>
+</body>
+<script>
+    var player;
+    var handCards;
+    var seatNum;
+    var turnNum;
+    // var table;
+    window.onload = function () {
+        console.log("on...")
+        getInfo();       //新闻
+
+    }
+
+    function getInfo() {
+
+        var xhr = new XMLHttpRequest();
+        var str = '';
+        xhr.open('get', 'http://39.104.87.202:8080/api/manager/table');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                var data = JSON.parse(xhr.responseText);
+                var tableMap = data.data;
+                document.getElementById('message').innerHTML = data.message;
+                document.getElementById('json').innerHTML = tableMap;
+                for (var key in tableMap) {
+                    console.log(key);
+                    var table = tableMap[key];
+                    console.log(table);
+                    console.log(table.riverCards);
+                    str += "<li>" + table.tableNum + "</li>" +
+                        "<li>" + "gameType:" + table.gameType + "</li>" +
+                        "<li>" + "riverCards:" + table.riverCards.toString()+"" + "</li>" +
+                        "<li>" + "turnNum:" + table.turnNum + "</li>" +
+                        "<li>" + "players:" + table.players.toString() + "</li>" ;
+                }
+                document.getElementById('str').innerHTML = str;
+
+            }
+        };
+        xhr.send()
+    }
+
+</script>
+</html>

@@ -135,6 +135,48 @@ function changeInfo() {
     }
 }
 
+function uploadImg() {
+    var data = new FormData(file)
+    $.ajax({
+        type:'POST',
+        url:'',
+        data:'',
+        mimeType:'multipart/form-data',
+        dataType:'json',
+
+    })
+}
+
+$('#brandPic').on('change',function(){
+    console.log('image_upload')
+    // 如果没有选择图片 直接退出
+    if(this.files.length <=0){
+        return false;
+    }
+    // 图片上传到服务器
+    var pic1 = this.files[0];
+    var formData = new FormData();
+    // 服务端要求参数是 pic1
+    formData.append('pic1',pic1);
+    $.ajax({
+        url:'https://api.uomg.com/api/image.baidu',
+        type:'post',
+        data:formData,
+        cache: false, //上传文件不需要缓存
+        processData: false, // 告诉jQuery不要去处理发送的数据
+        contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+        success:function(data){
+            console.log(data);
+            // 设置图片预览功能
+            // $('.head-img').attr('src',data.picAddr);
+        },
+        fail:function (res) {
+            console.log('失败@@@'+res)
+        }
+
+    })
+})
+
 /**
  * 切歌
  */

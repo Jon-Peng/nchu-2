@@ -8,14 +8,19 @@ import com.pjy.nchu2.entity.PostEntity;
 import com.pjy.nchu2.entity.UserEntity;
 import com.pjy.nchu2.model.post.AddTextPostModel;
 import com.pjy.nchu2.service.CommentService;
+import com.pjy.nchu2.service.FileService;
 import com.pjy.nchu2.service.PostService;
 import com.pjy.nchu2.service.UserService;
+import com.pjy.nchu2.utils.JsonResult;
+import com.pjy.nchu2.utils.MyFileUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +35,8 @@ public class PostController {
     private UserService userService;
     @Resource
     private CommentService commentService;
+    @Resource
+    private FileService fileService;
 
     @GetMapping("/post/toPublish")
     public String toAdd() {
@@ -41,7 +48,7 @@ public class PostController {
     public String addTextPost(@ModelAttribute AddTextPostModel textPostModel,
                               HttpServletRequest request
 //                              @RequestParam(value = "postId", required = false) int postId,
-                             ) {
+    ) {
         UserEntity userEntity = (UserEntity) request.getSession().getAttribute("userEntity");
         if (userEntity == null) {
             request.setAttribute("error", "小伙子，没登录就想发帖嘛！");
@@ -49,13 +56,13 @@ public class PostController {
         }
         int stuId = userEntity.getStuId();
         int postId = 0;
-             postId =  textPostModel.getPostId();
+        postId = textPostModel.getPostId();
         System.out.println(postId);
         String title = textPostModel.getTitle();
         String content = textPostModel.getContent();
         String tag = textPostModel.getTag();
 
-        PostEntity postEntity = postService.addTextPost(postId,stuId, title, tag, content);//写入帖子，返回post
+        PostEntity postEntity = postService.addTextPost(postId, stuId, title, tag, content);//写入帖子，返回post
         List imageList = textPostModel.getImageList();
         int orderIndex = 0;
         if (imageList != null && imageList.size() != 0) {
@@ -70,12 +77,12 @@ public class PostController {
     @GetMapping("/post/{postId}")
     public String postDetail(HttpServletRequest request,
                              @PathVariable(name = "postId") int postId,
-                             Model model){
+                             Model model) {
         PostEntity postDetail = postService.selectOnePost(postId);
-        System.out.println("postDetail@@@@@@@@@@@@$"+postDetail);
+        System.out.println("postDetail@@@@@@@@@@@@$" + postDetail);
         if (postDetail == null) {
-            model.addAttribute("error","哎呀！帖子已经不见啰(￣、￣)");
-            model.addAttribute("code",201);
+            model.addAttribute("error", "哎呀！帖子已经不见啰(￣、￣)");
+            model.addAttribute("code", 201);
             return "error";
         }
         UserEntity userEntity = userService.getUser(postDetail.getStuId());
@@ -83,9 +90,9 @@ public class PostController {
             userEntity.setNickName("该账户已注销");
         }
         Map postDetailMap = new HashMap<>();
-        postDetailMap.put("postDetail",postDetail);
-        postDetailMap.put("postUser",userEntity);
-        request.getSession().setAttribute("postMap",postDetailMap);
+        postDetailMap.put("postDetail", postDetail);
+        postDetailMap.put("postUser", userEntity);
+        request.getSession().setAttribute("postMap", postDetailMap);
 
         //评论回复
         List<PostCommentEntity> list = commentService.getPostComments(postId);
@@ -101,8 +108,8 @@ public class PostController {
         model.addAttribute("postId", postId);
 //        request.setAttribute("postId",postId);
 
-        postDetail.setReadCount(postDetail.getReadCount()+1);//修改阅读数
-        System.out.println("浏览量"+ postDetail.getReadCount());
+        postDetail.setReadCount(postDetail.getReadCount() + 1);//修改阅读数
+        System.out.println("浏览量" + postDetail.getReadCount());
         postService.updatePost(postDetail);
 
         return "post/postDetail";
@@ -138,7 +145,7 @@ public class PostController {
             return "index";
         } else {
             int stuId = Integer.parseInt(s);
-            postList = postService.allPostList(keyword,stuId);
+            postList = postService.allPostList(keyword, stuId);
             PageInfo<PostEntity> pageInfo = new PageInfo<>(postList);//使用pageInfo进行包装
             request.getSession().setAttribute("pageInfo", pageInfo);//存入session
             System.out.println("--搜索PAGE--" + pageInfo);
@@ -156,17 +163,19 @@ public class PostController {
         }
 
     }
+
     //修改帖子
     @GetMapping("/post/editPost")
     public String editPost(HttpServletRequest request,
-            Model model){
+                           Model model) {
         Map map = (Map) request.getSession().getAttribute("postMap");
-        model.addAttribute("postDetail",map.get("postDetail"));
+        model.addAttribute("postDetail", map.get("postDetail"));
         return "post/publish";
     }
+
     //删除帖子
     @GetMapping("/post/deletePost")
-    public String deletePost(HttpServletRequest request){
+    public String deletePost(HttpServletRequest request) {
         Map map = (Map) request.getSession().getAttribute("postMap");
         PostEntity postEntity = (PostEntity) map.get("postDetail");
         postEntity.setStatus(-1);
@@ -174,4 +183,29 @@ public class PostController {
         return "redirect:/user/profile";
     }
 
+    //上传图片
+    @ResponseBody
+    @PostMapping("/post/uploadImg")
+    public JsonResult uploadImg(HttpServletRequest request,
+                                MultipartFile file) throws IOException {
+
+        long size = file.getSize();
+        String path = "src\\main\\resources\\static\\images\\uploadImg\\";
+
+//        String path = request.getServletContext().getRealPath("/uploadImg");//  AppData/temp/tomcat
+//        String path2 = request.getServletPath();//servlet 映射路径
+//        String fileName = file.getName();//获取完整名
+//        String fileName2 = file.getOriginalFilename();//获取
+
+        String uri = fileService.uploadImg(file, path);
+        String url = "192.168.../images/uploadImg/"+uri;
+        if (uri != null) {
+            Map map = new HashMap() {{
+                put("url", url);
+                put("size", size);
+            }};
+            return new JsonResult(200, "图片上传成功", map);
+        }
+        return new JsonResult(500, "图片格式不符合！");
+    }
 }

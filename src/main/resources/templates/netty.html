@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Netty-Websocket</title>
+    <script type="text/javascript">
+        // by zhengkai.blog.csdn.net
+        var socket;
+        var uid = 6000;
+        var player;
+        var handCards;
+        var seatNum;
+        var turnNum;
+        var table;
+        var players;
+        if (!window.WebSocket) {
+            window.WebSocket = window.MozWebSocket;
+        }
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://127.0.0.1:8787/ws?token=6000&say=hello");
+            socket.onmessage = function (event) {
+
+                console.log(event);
+                var ta = document.getElementById('responseText');
+                ta.value += event.data + "\r\n\r\n";
+
+                table = event.data;
+                table = JSON.parse(table)
+                if (event.data.actionCode == "AllReadyAction") {
+                    console.log("---AllReadyAction---")
+                    handCards = player.handCards;
+                    turnNum = table.turnNum;
+                } else if (event.data.actionCode == "playAction") {
+                    console.log("---playAction---")
+                } else if (event.data.actionCode == "drawAction") {
+                    console.log("---drawAction---")
+                } else {
+                    console.log("---enterTable---")
+
+                    players = table.players;
+                    for (var index in players) {
+                        var p = players[index];
+                        console.log(p.uid + "--" + uid)
+                        if (p.uid == uid) {
+                            player = p;
+                            seatNum = p.seatNum
+                        }
+                    }
+                    document.getElementById('seatNum').innerHTML = seatNum;
+                }
+                updateValue();
+            };
+            socket.onopen = function (event) {
+                var ta = document.getElementById('responseText');
+                ta.value = "Netty-WebSocket服务器。。。。。。连接  \r\n";
+            };
+            socket.onclose = function (event) {
+                var ta = document.getElementById('responseText');
+                ta.value += "\r\n Netty-WebSocket服务器。。。。。。关闭 \r\n";
+            };
+        } else {
+            alert("您的浏览器不支持WebSocket协议！");
+        }
+
+        function send(message) {
+            if (!window.WebSocket) {
+                return;
+            }
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message);
+            } else {
+                alert("WebSocket 连接没有建立成功！");
+            }
+        }
+
+        function updateValue() {
+            document.getElementById('handCards').innerHTML = handCards;
+
+            document.getElementById('turnNum').innerHTML = turnNum;
+            document.getElementById('handCards').innerHTML = handCards;
+        }
+
+    </script>
+</head>
+<body>
+<br><br><br>
+<form onSubmit="return false;" style="text-align: center;">
+    <label>TEXT</label><input style="width:1000px;height: 30px;" type="text" name="message" value=""/> <br/>
+    <br/> <input style="width:400px" type="button" value="发送ws消息"
+                 onClick="send(this.form.message.value)"/>
+    <br>
+    <hr color="black"/>
+    UID:<span id="uid">6000</span><br>
+    手牌:<span id="handCards"></span><br>
+    seat:<span id="seatNum"></span><br>
+    turn:<span id="turnNum"></span><br>
+    宝牌:<span id="rascal"></span><br>
+
+    <h3>服务端返回的应答消息</h3>
+    <textarea id="responseText" style="width: 1024px;height: 300px;"></textarea>
+</form>
+</body>
+</html>

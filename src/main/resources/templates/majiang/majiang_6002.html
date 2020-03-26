@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Netty-Websocket</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        var socket;
+        var uid = 6002;
+        var player;
+        var handCards;
+        var seatNum;
+        var tableNum;
+        var turnNum;
+        var table;
+        var players;
+        if (!window.WebSocket) {
+            window.WebSocket = window.MozWebSocket;
+        }
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://39.104.87.202:8787/ws?token=6002&say=hello");
+            socket.onmessage = function (event) {
+
+                console.log(event);
+                var responseText = document.getElementById('responseText');
+                responseText.value += event.data + "\r\n\r\n";
+
+                var data = JSON.parse(event.data)
+                if (data.actionCode == "AllReadyAction") {
+                    console.log("---AllReadyAction---")
+					players = data.players;
+					for (var index in players) {
+                        var p = players[index];
+                        //console.log(p.uid + "--" + uid)
+                        if (p.uid == uid) {
+                            player = p;
+                            handCards = player.handCards;
+							document.getElementById('seatNum').innerHTML = seatNum;
+                        }
+                    }
+                    turnNum = data.turnNum;
+                } else if (data.actionCode == "PlayAction") {
+                    console.log("---PlayAction---")
+					players = data.players;
+					for (var index in players) {
+                        var p = players[index];
+                        //console.log(p.uid + "--" + uid)
+                        if (p.uid == uid) {
+                            player = p;
+                            handCards = player.handCards;
+                        }
+                    }
+					turnNum = data.turnNum;
+                } else if (data.actionCode == "DrawAction") {
+                    console.log("---DrawAction---")
+					if(data.player.uid == uid){
+						handCards = data.player.handCards
+					}
+
+                } else if (data.actionCode == "EnterTableAction"){
+                    console.log("---EnterTable---")
+                    players = data.players;
+                    for (var index in players) {
+                        var p = players[index];
+                        if (p.uid == uid) {
+                            player = p;
+                            seatNum = p.seatNum;
+                            tableNum = p.tableNum;
+                            document.getElementById('tableNum').innerHTML = p.tableNum;
+							document.getElementById('rascal').innerHTML = p.rascalCount;
+                        }
+                    }
+
+                }
+                updateValue();
+            };
+            socket.onopen = function (event) {
+                console.log(event);
+                document.getElementById('uid').innerHTML = uid;
+                var responseText = document.getElementById('responseText');
+                responseText.value = "Netty-WebSocket服务器。。。。。。连接  \r\n";
+            };
+            socket.onclose = function (event) {
+                var ta = document.getElementById('responseText');
+                ta.value += "\r\n Netty-WebSocket服务器。。。。。。关闭 \r\n";
+            };
+        } else {
+            alert("您的浏览器不支持WebSocket协议！");
+        }
+
+        function send(message) {
+            if (!window.WebSocket) {
+                return;
+            }
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message);
+            } else {
+                alert("WebSocket 连接没有建立成功！");
+            }
+        }
+
+        function updateValue() {
+            document.getElementById('handCards').innerHTML = handCards;
+            document.getElementById('turnNum').innerHTML = turnNum;
+        }
+		function enterTableAction() {
+		var type = document.getElementById('type').value;
+            var msg = "{ 'actionCode':'EnterTableAction' ,'Params':{'code':-1,'type':"+type+"}}";
+			send(msg);
+        }
+		function drawAction() {
+            var msg = "{ 'actionCode':'DrawAction' ,'Params':{}}";
+			send(msg);
+        }
+		function playAction() {
+			var card = document.getElementById('playCard').value;
+            var msg = "{ 'actionCode':'PlayAction' ,'Params':{'card':" + card + "}}";
+			send(msg);
+        }
+		function readyAction() {
+            var msg = "{ 'actionCode':'ReadyAction' ,'Params':{}}";
+			send(msg);
+        }
+		function huAction() {
+            var msg = "{ 'actionCode':'HuAction' ,'Params':{}}";
+			send(msg);
+        }
+        function addOneCard() {
+
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:8080/api/game/card/add",
+                // contentType: 'application/json',
+                data:
+                    {"tableNum": tableNum,"card": document.getElementById('addCard').value},
+                success: function (response) {
+                    if (response.code == 200) {
+                        console.log("添加一张牌成功");
+                        // window.location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                dataType: "json"
+            });
+        }
+
+    </script>
+</head>
+<body>
+<br><br><br>
+<form onSubmit="return false;" style="text-align: center;">
+    <label>TEXT</label><input style="width:650px;height: 30px;" type="text" name="message" value=""/> <br/>
+    <br/> <input style="width:400px" type="button" value="发送ws消息"
+                 onClick="send(this.form.message.value)"/>
+    <br>
+    <hr color="black"/>
+	<br>
+    UID:<span id="uid" style="padding-right:30px;"></span>
+    桌号:<span id="tableNum" style="padding-right:30px;"></span>
+    位置:<span id="seatNum" style="padding-right:30px;"></span>
+    宝牌数:<span id="rascal" style="padding-right:30px;"></span>
+    turn:<span id="turnNum" style="padding-right:30px;"></span>
+    手牌:<span id="handCards" style="padding-right:30px;"></span>
+    <br><br>
+	<button onClick="enterTableAction()" >匹配</button>
+	<input style="width:30px;height: 18px;" type="text" id="type" value="1"/>&nbsp;&nbsp;
+
+	<button onClick="readyAction()">准备</button>&nbsp;&nbsp;
+	<button onClick="playAction()" >出牌</button>
+	<input style="width:30px;height: 18px;" type="text" id="playCard" value=""/>&nbsp;&nbsp;
+
+	<button onClick="drawAction()" >摸牌</button>&nbsp;&nbsp;
+	<button onClick="huAction()" >胡牌</button>&nbsp;&nbsp;
+
+    <button onClick="addOneCard()" >加牌</button>
+    <input style="width:30px;height: 18px;" type="text" id="addCard" value=""/>&nbsp;&nbsp;
+
+    <h3>服务端返回的应答消息</h3>
+    <textarea id="responseText" style="width: 1024px;height: 300px;"></textarea>
+</form>
+</body>
+</html>
