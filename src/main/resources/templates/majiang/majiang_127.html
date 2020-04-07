@@ -71,6 +71,18 @@
                                 document.getElementById('tableNum').innerHTML = p.tableNum;
                             }
                         }
+                    } else if (data.actionCode == "PengAction") {
+                        console.log("---PengAction---")
+                        handCards = data.handCards;
+                        turnNum = data.seatNum;
+                    }else if (data.actionCode == "ChiAction") {
+                        console.log("---ChiAction---")
+                        handCards = data.handCards;
+                        turnNum = data.seatNum;
+                    }else if (data.actionCode == "GangAction") {
+                        console.log("---GangAction---")
+                        handCards = data.handCards;
+                        turnNum = data.seatNum;
                     }
                     updateValue();
                 };
@@ -122,7 +134,15 @@
         }
         //进入牌局
         function enterTableAction() {
-            var type = document.getElementById('type').value;
+            var tableNum = document.getElementById('enterTableNum').value;
+            var type = document.getElementById('enterType').value;
+            var msg = "{ 'actionCode':'EnterTableAction' ,'Params':{'code':"+tableNum+",'type':" + type + "}}";
+            send(msg);
+        }
+        //创建牌局
+        function createTableAction() {
+
+            var type = document.getElementById('createType').value;
             var msg = "{ 'actionCode':'EnterTableAction' ,'Params':{'code':-1,'type':" + type + "}}";
             send(msg);
         }
@@ -135,6 +155,30 @@
         function playAction() {
             var card = document.getElementById('playCard').value;
             var msg = "{ 'actionCode':'PlayAction' ,'Params':{'card':" + card + "}}";
+            send(msg);
+        }
+        //碰
+        function pengAction() {
+            var card = document.getElementById('pengCard').value;
+            var msg = "{ 'actionCode':'PengAction' ,'Params':{'card':" + card + "}}";
+            send(msg);
+        }
+        //吃
+        function chiAction() {
+            var card2 = document.getElementById('chiCard2').value;
+            var card3 = document.getElementById('chiCard3').value;
+            var msg = "{ 'actionCode':'ChiAction' ,'Params':{'card2':" + card2 + ",'card3':"+card3+"}}";
+            send(msg);
+        }
+        //碰
+        function gangAction() {
+            var card = document.getElementById('gangCard').value;
+            var msg = "{ 'actionCode':'GangAction' ,'Params':{'card':" + card + "}}";
+            send(msg);
+        }
+        //过
+        function passAction() {
+            var msg = "{ 'actionCode':'PassAction' ,'Params':{}}";
             send(msg);
         }
         //准备
@@ -183,13 +227,11 @@
     </script>
 </head>
 <body>
-<br>
 <form onSubmit="return false;" style="text-align: center;">
     <label>TEXT</label><input style="width:650px;height: 30px;" type="text" name="message" value=""/> <br/>
     <br/> <input style="width:400px" type="button" value="发送ws消息"
                  onClick="send(this.form.message.value)"/>
     <br>
-    <p>1.设置玩家id 2.连接服务器 3.匹配进入房间</p>
     <hr color="black"/>
     <br>
     UID:<span id="uid" style="padding-right:30px;"></span>
@@ -206,19 +248,34 @@
     <input style="width:40px;height: 18px;" type="text" id="memberId" value="6000"/>&nbsp;&nbsp;
     <button onClick="websoketStart()">连接</button>&nbsp;&nbsp;
 
-    <button onClick="enterTableAction()">匹配</button>
-    <input style="width:30px;height: 18px;" type="text" id="type" value="1"/>&nbsp;&nbsp;
+    <button onClick="enterTableAction()">进入</button>
+    <input style="width:30px;height: 18px;" type="text" id="enterTableNum" value="-1"/>
+    <input style="width:30px;height: 18px;" type="text" id="enterType" value="1"/>&nbsp;&nbsp;
+
+    <button onClick="createTableAction()">创建</button>
+    <input style="width:30px;height: 18px;" type="text" id="createType" value="10"/>&nbsp;&nbsp;
 
     <button onClick="readyAction()">准备</button>&nbsp;&nbsp;
-    <button onClick="playAction()">出牌</button>
-    <input style="width:30px;height: 18px;" type="text" id="playCard" value=""/>&nbsp;&nbsp;
-
-    <button onClick="drawAction()">摸牌</button>&nbsp;&nbsp;
-    <button onClick="huAction()">胡牌</button>&nbsp;&nbsp;
     <button onClick="hangUpAction()">托管</button>&nbsp;&nbsp;
     <button onClick="addOneCard()">加牌</button>
     <input style="width:30px;height: 18px;" type="text" id="addCard" value=""/>&nbsp;&nbsp;
     <button onClick="websoketClose()">断开</button>&nbsp;&nbsp;
+    <br/>
+    <button onClick="playAction()">出牌</button>
+    <input style="width:30px;height: 18px;" type="text" id="playCard" value=""/>&nbsp;&nbsp;
+    <button onClick="drawAction()">摸牌</button>&nbsp;&nbsp;
+    <button onClick="pengAction()">碰</button>
+    <input style="width:30px;height: 18px;" type="text" id="pengCard" value=""/>&nbsp;&nbsp;
+    <button onClick="chiAction()">吃</button>
+    <input style="width:30px;height: 18px;" type="text" id="chiCard2" value=""/>
+    <input style="width:30px;height: 18px;" type="text" id="chiCard3" value=""/>&nbsp;&nbsp;
+    <button onClick="gangAction()">杠</button>
+    <input style="width:30px;height: 18px;" type="text" id="gangCard" value=""/>&nbsp;&nbsp;
+
+    <button onClick="passAction()">过</button>&nbsp;&nbsp;
+
+
+    <button onClick="huAction()">胡牌</button>&nbsp;&nbsp;
     <br><br>
 
     <div id="mjImg">
